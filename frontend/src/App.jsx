@@ -11,9 +11,13 @@ import DashboardLayout from './layouts/DashboardLayout';
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    if (!hash) {
-      window.scrollTo(0, 0);
+    if (hash) {
+      const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
     }
+
+    window.scrollTo(0, 0);
   }, [pathname, hash]);
   return null;
 };

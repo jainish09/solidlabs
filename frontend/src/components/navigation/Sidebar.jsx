@@ -49,19 +49,16 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     }
   }, [location.pathname, role, setRole]);
 
-  const handleItemNavigation = (e, path) => {
-    e.preventDefault();
-    navigate(path);
-    if (onClose) {
-      setTimeout(() => {
-        onClose();
-      }, 30);
-    }
+  const handleItemNavigation = () => {
+    onClose?.();
   };
 
+<<<<<<< HEAD
   // Customer Navigation Items with Subscription Access Controls
+=======
+  // Main navigation items for the customer workspace
+>>>>>>> 535b8eba77b292031cabc33d8ef14ecebf85c3c4
   const customerLinks = [
-    { name: 'Overview', path: '/customer/dashboard', icon: <LayoutDashboard size={16} /> },
     { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag size={16} /> },
     {
       name: 'Post Requirement',
@@ -83,6 +80,7 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       icon: <Truck size={16} />,
       badge: activeOrdersCount > 0 ? activeOrdersCount : null,
     },
+<<<<<<< HEAD
     {
       name: 'Production Tracking',
       path: '/customer/tracking',
@@ -97,6 +95,9 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       requiredFeature: FEATURES.QUALITY_REPORTS,
       requiredTier: 'ENT',
     },
+=======
+    { name: 'Quality Reports', path: '/customer/quality', icon: <ShieldCheck size={16} /> },
+>>>>>>> 535b8eba77b292031cabc33d8ef14ecebf85c3c4
     {
       name: 'Messages',
       path: '/customer/messages',
@@ -216,10 +217,10 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
           const isLocked = role === 'customer' && item.requiredFeature && !hasAccess(item.requiredFeature);
 
           return (
-            <a
+            <Link
               key={item.path}
-              href={item.path}
-              onClick={(e) => handleItemNavigation(e, item.path)}
+              to={item.path}
+              onClick={handleItemNavigation}
               className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                 active
                   ? 'bg-teal-50 text-teal-900 font-bold border-l-4 border-teal-600 shadow-2xs'
@@ -244,7 +245,7 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
                 )}
                 {active && <ChevronRight size={14} className="text-teal-600" />}
               </div>
-            </a>
+            </Link>
           );
         })}
       </nav>

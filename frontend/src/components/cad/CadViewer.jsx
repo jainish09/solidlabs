@@ -25,9 +25,12 @@ import {
 } from 'lucide-react';
 import Badge from '../common/Badge';
 
+// Keep the default identity stable because geometry effects depend on params.
+const EMPTY_PARAMS = Object.freeze({});
+
 export const CadViewer = ({
   preset = 'mounting_plate',
-  params = {},
+  params = EMPTY_PARAMS,
   customGeometry = null,
   colorTheme = 'metal', // 'metal' | 'orange' | 'teal' | 'steel' | 'white'
   height = '480px',
