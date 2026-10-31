@@ -41,7 +41,9 @@ export const Navbar = () => {
     { name: 'How It Works', path: '/#how-it-works' },
   ];
 
-  const navLinks = role === 'customer' ? customerNavLinks : defaultNavLinks;
+  const navLinks = (role === 'customer' ? customerNavLinks : defaultNavLinks).filter(
+    (link) => location.pathname !== '/' || !['Marketplace', 'My Projects', 'How It Works'].includes(link.name)
+  );
 
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/' && !location.hash;
@@ -82,7 +84,7 @@ export const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md text-[#0F172A] border-b border-teal-100 shadow-xs select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-5 lg:px-5">
         <div className="flex items-center justify-between h-16 gap-6">
           
           {/* Left: 3-Lines Sidebar Toggle Icon + Brand Logo */}
@@ -114,22 +116,24 @@ export const Navbar = () => {
           </div>
 
           {/* Center: Clean & Uncluttered Navigation Links (Evenly Spaced) */}
-          <div className="hidden md:flex items-center gap-7 lg:gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => handleNavClick(link.path)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-colors ${
-                  isActive(link.path)
-                    ? 'text-teal-700 bg-teal-50 border border-teal-200/60 font-bold'
-                    : 'text-slate-600 hover:text-teal-700 hover:bg-teal-50/50'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
+          {navLinks.length > 0 && (
+            <div className="hidden md:flex items-center gap-7 lg:gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => handleNavClick(link.path)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-colors ${
+                    isActive(link.path)
+                      ? 'text-teal-700 bg-teal-50 border border-teal-200/60 font-bold'
+                      : 'text-slate-600 hover:text-teal-700 hover:bg-teal-50/50'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* Right: Search, Messages, Role Pill, and Action CTA (Evenly Spaced) */}
           <div className="flex items-center gap-3.5 shrink-0">

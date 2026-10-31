@@ -36,7 +36,9 @@ export const MessagesPage = () => {
       setActiveConvId(conversations[0].id);
       markConversationAsRead(conversations[0].id);
     }
-  }, [conversationId, conversations]);
+  // Depend on the list length instead of its identity: marking a conversation
+  // read replaces the array, and the old dependency caused an update loop.
+  }, [conversationId, conversations.length, activeConvId, role]);
 
   const handleSelectConversation = (id) => {
     setActiveConvId(id);

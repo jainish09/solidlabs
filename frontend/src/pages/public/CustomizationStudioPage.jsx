@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { AUTOMOTIVE_PRODUCTS } from '../../data/automotiveProducts';
+import { CUSTOMER_MARKETPLACE_PRODUCTS } from '../../data/automotiveProducts';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
@@ -33,8 +33,8 @@ export const CustomizationStudioPage = () => {
   const { postRequirement, showToast } = useAuth();
 
   // Find target product
-  const defaultProduct = AUTOMOTIVE_PRODUCTS[0];
-  const initialProduct = AUTOMOTIVE_PRODUCTS.find((p) => p.id === productId) || defaultProduct;
+  const defaultProduct = CUSTOMER_MARKETPLACE_PRODUCTS[0];
+  const initialProduct = CUSTOMER_MARKETPLACE_PRODUCTS.find((p) => p.id === productId) || defaultProduct;
   const [selectedProduct, setSelectedProduct] = useState(initialProduct);
 
   // 3D Viewport or Image toggle
@@ -88,7 +88,7 @@ export const CustomizationStudioPage = () => {
   // Sync selectedProduct when URL productId changes
   useEffect(() => {
     if (productId) {
-      const match = AUTOMOTIVE_PRODUCTS.find((p) => p.id === productId);
+      const match = CUSTOMER_MARKETPLACE_PRODUCTS.find((p) => p.id === productId);
       if (match && match.id !== selectedProduct.id) {
         setSelectedProduct(match);
       }
@@ -278,12 +278,12 @@ export const CustomizationStudioPage = () => {
           <select
             value={selectedProduct.id}
             onChange={(e) => {
-              const p = AUTOMOTIVE_PRODUCTS.find((item) => item.id === e.target.value);
+              const p = CUSTOMER_MARKETPLACE_PRODUCTS.find((item) => item.id === e.target.value);
               if (p) setSelectedProduct(p);
             }}
             className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm max-w-xs truncate"
           >
-            {AUTOMOTIVE_PRODUCTS.map((prod) => (
+            {CUSTOMER_MARKETPLACE_PRODUCTS.map((prod) => (
               <option key={prod.id} value={prod.id}>
                 {prod.category} — {prod.name}
               </option>

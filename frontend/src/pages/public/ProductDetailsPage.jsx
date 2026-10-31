@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { AUTOMOTIVE_PRODUCTS } from '../../data/automotiveProducts';
+import { CUSTOMER_MARKETPLACE_PRODUCTS } from '../../data/automotiveProducts';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
@@ -27,7 +27,7 @@ export const ProductDetailsPage = () => {
   const navigate = useNavigate();
   const { wishlist, toggleWishlist, showToast, role, getOrCreateConversationForProduct } = useAuth();
 
-  const product = AUTOMOTIVE_PRODUCTS.find((p) => p.id === id) || AUTOMOTIVE_PRODUCTS[0];
+  const product = CUSTOMER_MARKETPLACE_PRODUCTS.find((p) => p.id === id) || CUSTOMER_MARKETPLACE_PRODUCTS[0];
   const isWishlisted = wishlist.includes(product.id);
 
   const handleChatWithManufacturer = () => {

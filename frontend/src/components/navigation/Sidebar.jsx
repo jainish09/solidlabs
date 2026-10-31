@@ -53,11 +53,7 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     onClose?.();
   };
 
-<<<<<<< HEAD
-  // Customer Navigation Items with Subscription Access Controls
-=======
-  // Main navigation items for the customer workspace
->>>>>>> 535b8eba77b292031cabc33d8ef14ecebf85c3c4
+// Customer Navigation Items with Subscription Access Controls
   const customerLinks = [
     { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag size={16} /> },
     {
@@ -80,7 +76,6 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       icon: <Truck size={16} />,
       badge: activeOrdersCount > 0 ? activeOrdersCount : null,
     },
-<<<<<<< HEAD
     {
       name: 'Production Tracking',
       path: '/customer/tracking',
@@ -95,9 +90,23 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       requiredFeature: FEATURES.QUALITY_REPORTS,
       requiredTier: 'ENT',
     },
-=======
+    {
+      name: 'Production Tracking',
+      path: '/customer/tracking',
+      icon: <Layers size={16} />,
+      requiredFeature: FEATURES.PRODUCTION_TRACKING,
+      requiredTier: 'ENT',
+    },
+    {
+      name: 'Quality Reports',
+      path: '/customer/quality',
+      icon: <ShieldCheck size={16} />,
+      requiredFeature: FEATURES.QUALITY_REPORTS,
+      requiredTier: 'ENT',
+    },
+
     { name: 'Quality Reports', path: '/customer/quality', icon: <ShieldCheck size={16} /> },
->>>>>>> 535b8eba77b292031cabc33d8ef14ecebf85c3c4
+
     {
       name: 'Messages',
       path: '/customer/messages',
