@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import Badge from '../common/Badge';
 
+// Keep the default identity stable because geometry effects depend on params.
 const EMPTY_PARAMS = Object.freeze({});
 
 export const CadViewer = ({
