@@ -12,6 +12,7 @@ import {
   SURFACE_FINISHES,
   TOLERANCES,
 } from '../../data/mockData';
+import { MOCK_CAD_ASSETS } from '../../data/mockData';
 import {
   Receipt,
   CheckCircle2,
@@ -30,12 +31,13 @@ import {
 } from 'lucide-react';
 
 export const QuotesPage = () => {
-  const { cadAssets, createOrder, showToast } = useAuth();
+  const { cadAssets = MOCK_CAD_ASSETS, createOrder, showToast } = useAuth();
+  const safeCadAssets = Array.isArray(cadAssets) && cadAssets.length > 0 ? cadAssets : MOCK_CAD_ASSETS;
   const navigate = useNavigate();
 
   // Selected CAD Model
-  const [selectedAssetId, setSelectedAssetId] = useState(cadAssets[0]?.id || 'cad_001');
-  const selectedAsset = cadAssets.find((a) => a.id === selectedAssetId) || cadAssets[0];
+  const [selectedAssetId, setSelectedAssetId] = useState(safeCadAssets[0]?.id || 'cad_001');
+  const selectedAsset = safeCadAssets.find((a) => a.id === selectedAssetId) || safeCadAssets[0];
 
   // Configurator Options
   const [selectedProcessId, setSelectedProcessId] = useState('cnc_3axis');

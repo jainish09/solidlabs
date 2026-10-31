@@ -39,8 +39,14 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     }
   }, [location.pathname, role, setRole]);
 
-  const handleItemClick = () => {
-    if (onClose) onClose();
+  const handleItemNavigation = (e, path) => {
+    e.preventDefault();
+    navigate(path);
+    if (onClose) {
+      setTimeout(() => {
+        onClose();
+      }, 30);
+    }
   };
 
   const customerLinks = [
@@ -141,11 +147,11 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
         {links.map((item) => {
           const active = location.pathname === item.path;
           return (
-            <Link
+            <a
               key={item.path}
-              to={item.path}
-              onClick={handleItemClick}
-              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+              href={item.path}
+              onClick={(e) => handleItemNavigation(e, item.path)}
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
                 active
                   ? 'bg-[#111111] text-white font-semibold shadow-xs'
                   : 'text-[#858585] hover:bg-gray-100 hover:text-[#111111]'
@@ -163,7 +169,7 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
                 )}
                 {active && <ChevronRight size={13} className="text-[#FF7138]" />}
               </div>
-            </Link>
+            </a>
           );
         })}
       </nav>

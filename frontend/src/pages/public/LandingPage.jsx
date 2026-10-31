@@ -154,12 +154,13 @@ export const LandingPage = () => {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Button
                 variant="primary"
                 size="lg"
                 onClick={() => navigate('/marketplace')}
                 rightIcon={<ArrowRight size={18} />}
+                className="font-bold shadow-md shadow-[#FF7138]/25"
               >
                 Explore Products
               </Button>
@@ -169,26 +170,9 @@ export const LandingPage = () => {
                 size="lg"
                 onClick={() => navigate('/customize/prod_001')}
                 leftIcon={<PlusCircle size={18} />}
+                className="font-bold text-[#111111]"
               >
                 Post a Requirement
-              </Button>
-
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => navigate('/customer/dashboard')}
-                className="border-white/30 text-white hover:bg-white/10"
-              >
-                Client Portal
-              </Button>
-
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => navigate('/manufacturer/dashboard')}
-                className="border-white/30 text-white hover:bg-white/10"
-              >
-                Manufacturer Hub
               </Button>
             </div>
 
@@ -282,11 +266,10 @@ export const LandingPage = () => {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
-                selectedCategory === cat
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${selectedCategory === cat
                   ? 'bg-[#111111] text-white font-semibold shadow-xs'
                   : 'bg-white text-[#858585] hover:text-[#111111] border border-gray-200'
-              }`}
+                }`}
             >
               {cat}
             </button>

@@ -11,6 +11,7 @@ import {
   INITIAL_DEMO_CONVERSATIONS,
   getSimulatedManufacturerReply,
 } from '../data/messagingData';
+import { MOCK_CAD_ASSETS } from '../data/mockData';
 
 const AppContext = createContext();
 
@@ -25,6 +26,36 @@ export const AuthProvider = ({ children }) => {
   const [orders, setOrders] = useState(INITIAL_DEMO_ORDERS);
   const [wishlist, setWishlist] = useState(['prod_001', 'prod_002', 'prod_016']);
   const [toast, setToast] = useState(null);
+  const [cadAssets, setCadAssets] = useState(MOCK_CAD_ASSETS);
+
+  const addCADAsset = (newAsset) => {
+    setCadAssets((prev) => [newAsset, ...prev]);
+    showToast(`Added ${newAsset.name} to CAD Assets`);
+  };
+
+  const createOrder = (quote) => {
+    const newOrder = {
+      id: `ord_${Date.now()}`,
+      orderNumber: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+      productName: quote.productName || 'Custom Machined Part',
+      category: quote.category || 'Precision Component',
+      manufacturerName: quote.manufacturerName || 'Apex Precision Tooling Ltd.',
+      quantity: quote.quantity || 100,
+      totalPriceINR: quote.finalPriceINR || quote.priceINR || 50000,
+      currentStageIndex: 0,
+      stages: PRODUCTION_STAGES.map((s, i) => ({
+        name: s.name,
+        completed: i === 0,
+        inProgress: i === 0,
+        timestamp: i === 0 ? 'Just Now' : null,
+      })),
+      carrier: 'BlueDart Express',
+      trackingNumber: `BD-IN-${Math.floor(100000 + Math.random() * 900000)}`,
+    };
+    setOrders((prev) => [newOrder, ...prev]);
+    showToast(`Order created: ${newOrder.orderNumber}`);
+    return newOrder;
+  };
 
   // SolidLabs Connect - Conversations State with LocalStorage Persistence
   const [conversations, setConversations] = useState(() => {
@@ -501,6 +532,10 @@ export const AuthProvider = ({ children }) => {
         updateProductionStage,
         analyticsData: MANUFACTURER_ANALYTICS_DATA,
         showToast,
+        cadAssets,
+        setCadAssets,
+        addCADAsset,
+        createOrder,
 
         // Workspace Sidebar Drawer
         sidebarOpen,

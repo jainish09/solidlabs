@@ -6,6 +6,7 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Modal from '../../components/common/Modal';
 import CadViewer from '../../components/cad/CadViewer';
+import { MOCK_CAD_ASSETS } from '../../data/mockData';
 import {
   Box,
   Layers,
@@ -25,7 +26,8 @@ import {
 } from 'lucide-react';
 
 export const CustomerAssetsPage = () => {
-  const { cadAssets, showToast } = useAuth();
+  const { cadAssets = MOCK_CAD_ASSETS, showToast } = useAuth();
+  const safeCadAssets = Array.isArray(cadAssets) ? cadAssets : MOCK_CAD_ASSETS;
   const navigate = useNavigate();
 
   // Active asset for 3D inspection modal
@@ -95,7 +97,7 @@ export const CustomerAssetsPage = () => {
 
       {/* Assets Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {cadAssets.map((asset) => (
+        {safeCadAssets.map((asset) => (
           <Card key={asset.id} className="flex flex-col justify-between group hover:border-[#111111] transition-all">
             <div>
               {/* Preview Box */}
