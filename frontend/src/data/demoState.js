@@ -1,0 +1,206 @@
+/**
+ * SolidLabs Shared Demonstration State
+ * Connects Customer Workspace with Manufacturer Workspace
+ * All data is demonstration mock data.
+ */
+
+export const INITIAL_DEMO_REQUIREMENTS = [
+  {
+    id: 'REQ-2026-104',
+    customerId: 'cust_01',
+    customerName: 'AeroVeloce Systems (Alex Rivera)',
+    productId: 'prod_016',
+    productName: 'TerraGrip All-Terrain Radial Commercial Tyre',
+    category: 'Tyres',
+    quantity: 120,
+    budgetINR: '₹5,50,000',
+    budgetNumeric: 550000,
+    material: 'High-Silica Wet Grip Performance Rubber',
+    deliveryLocation: 'Bengaluru Logistics Park, Karnataka, India',
+    expectedDeliveryDate: '2026-11-20',
+    manufacturingProcess: 'Dual-Stage Radial Moulding & Curing',
+    customizedSpecs: {
+      tyreSize: '215/65 R16',
+      treadPattern: 'All-Terrain Rugged (AT)',
+      compound: 'High-Silica Wet Grip Performance',
+      wetGripRequirement: 'Grade A (Wet Braking < 28m @ 80 km/h)',
+      rimDiameter: '16 Inch',
+    },
+    additionalInstructions: 'Require BIS ISI certification stamp and batch barcode tracking on sidewall.',
+    status: 'quoted', // 'open' | 'quoted' | 'in_production' | 'cancelled'
+    submittedAt: '2026-10-28 14:30',
+    quotesCount: 2,
+  },
+  {
+    id: 'REQ-2026-105',
+    customerId: 'cust_01',
+    customerName: 'AeroVeloce Systems (Alex Rivera)',
+    productId: 'prod_002',
+    productName: 'Veloce Forged Monoblock 19" Alloy Wheel',
+    category: 'Alloy Wheels',
+    quantity: 40,
+    budgetINR: '₹8,00,000',
+    budgetNumeric: 800000,
+    material: 'Forged 6061-T6 Aerospace Aluminum',
+    deliveryLocation: 'Pune Assembly Plant, Maharashtra, India',
+    expectedDeliveryDate: '2026-11-25',
+    manufacturingProcess: '10,000-Ton Closed Die Forging + 5-Axis Milling',
+    customizedSpecs: {
+      diameter: '19"',
+      width: '8.5J',
+      boltPattern: '5x114.3 mm',
+      finish: 'Matte Stealth Black',
+      offset: '+38 mm',
+    },
+    additionalInstructions: 'Each wheel must undergo radial fatigue and impact testing per JWL/VIA standards.',
+    status: 'open',
+    submittedAt: '2026-10-30 09:15',
+    quotesCount: 1,
+  },
+];
+
+export const INITIAL_DEMO_QUOTATIONS = [
+  {
+    id: 'QUO-2026-501',
+    requirementId: 'REQ-2026-104',
+    productName: 'TerraGrip All-Terrain Radial Commercial Tyre',
+    manufacturerId: 'mfg_01',
+    manufacturerName: 'Continental Rubber & Tyre Mills India (Demo)',
+    materialCost: 280000,
+    manufacturingCost: 145000,
+    finishingCost: 45000,
+    deliveryCost: 28000,
+    finalPriceINR: 498000,
+    estimatedCompletionDays: 14,
+    additionalTerms: 'Includes BIS ISI certified inspection report and wooden pallet dispatch.',
+    status: 'pending', // 'pending' | 'accepted' | 'rejected'
+    submittedAt: '2026-10-29 11:00',
+  },
+  {
+    id: 'QUO-2026-502',
+    requirementId: 'REQ-2026-104',
+    productName: 'TerraGrip All-Terrain Radial Commercial Tyre',
+    manufacturerId: 'mfg_02',
+    manufacturerName: 'Apex Precision Auto Rubber Works (Demo)',
+    materialCost: 295000,
+    manufacturingCost: 152000,
+    finishingCost: 48000,
+    deliveryCost: 32000,
+    finalPriceINR: 527000,
+    estimatedCompletionDays: 11,
+    additionalTerms: 'Express curing batch with 48h priority dispatch guarantee.',
+    status: 'pending',
+    submittedAt: '2026-10-29 16:45',
+  },
+];
+
+export const INITIAL_DEMO_ORDERS = [
+  {
+    id: 'ORD-2026-9041',
+    orderNumber: 'SL-9041',
+    productName: 'ApexFlow Carbon-Ceramic Brake Pad Set',
+    category: 'Automotive Brake Pads',
+    customerName: 'Alex Rivera (AeroVeloce Systems)',
+    manufacturerName: 'Vanguard Friction Systems Pvt. Ltd. (Demo)',
+    quantity: 80,
+    totalPriceINR: 388000,
+    material: 'Carbon-Ceramic Matrix with Synthetic Copper Fibers',
+    deliveryLocation: 'Pune Assembly Hub, Maharashtra',
+    carrier: 'BlueDart Automotive Priority',
+    trackingNumber: 'BD-9041-8812-IN',
+    currentStageIndex: 2, // 0: Order Confirmed, 1: Material Prep, 2: Manufacturing, 3: Quality QA, 4: Packaging, 5: Dispatched, 6: Delivered
+    stages: [
+      { name: 'Order Confirmed', completed: true, timestamp: '2026-10-26 10:00' },
+      { name: 'Material Preparation', completed: true, timestamp: '2026-10-27 08:30' },
+      { name: 'Manufacturing', completed: true, inProgress: true, timestamp: '2026-10-28 14:00' },
+      { name: 'Quality Inspection', completed: false, timestamp: 'Pending' },
+      { name: 'Packaging', completed: false, timestamp: 'Pending' },
+      { name: 'Dispatched', completed: false, timestamp: 'Pending' },
+      { name: 'Delivered', completed: false, timestamp: 'Pending' },
+    ],
+    qualityReportReady: true,
+  },
+  {
+    id: 'ORD-2026-9022',
+    orderNumber: 'SL-9022',
+    productName: 'LuminaMatrix Adaptive Matrix LED Headlights',
+    category: 'Car Headlights',
+    customerName: 'Alex Rivera (AeroVeloce Systems)',
+    manufacturerName: 'Photonics Auto Lighting Technologies (Demo)',
+    quantity: 25,
+    totalPriceINR: 375000,
+    material: 'Polycarbonate Optical Lens & Cast Aluminum Heatsink',
+    deliveryLocation: 'Gurugram Facility, Haryana',
+    carrier: 'Delhivery Freight Express',
+    trackingNumber: 'DLV-88210-992',
+    currentStageIndex: 5,
+    stages: [
+      { name: 'Order Confirmed', completed: true, timestamp: '2026-10-22 09:00' },
+      { name: 'Material Preparation', completed: true, timestamp: '2026-10-23 11:00' },
+      { name: 'Manufacturing', completed: true, timestamp: '2026-10-25 16:30' },
+      { name: 'Quality Inspection', completed: true, timestamp: '2026-10-27 10:15' },
+      { name: 'Packaging', completed: true, timestamp: '2026-10-28 12:00' },
+      { name: 'Dispatched', completed: true, inProgress: true, timestamp: '2026-10-30 08:00' },
+      { name: 'Delivered', completed: false, timestamp: 'Pending' },
+    ],
+    qualityReportReady: true,
+  },
+];
+
+export const PRODUCTION_STAGES = [
+  'Order Confirmed',
+  'Material Preparation',
+  'Manufacturing',
+  'Quality Inspection',
+  'Packaging',
+  'Dispatched',
+  'Delivered',
+];
+
+export const MANUFACTURER_ANALYTICS_DATA = {
+  monthlyRevenue: [
+    { month: 'May', revenueINR: 1420000, orders: 18 },
+    { month: 'Jun', revenueINR: 1850000, orders: 24 },
+    { month: 'Jul', revenueINR: 2100000, orders: 29 },
+    { month: 'Aug', revenueINR: 1980000, orders: 26 },
+    { month: 'Sep', revenueINR: 2650000, orders: 35 },
+    { month: 'Oct', revenueINR: 3120000, orders: 42 },
+  ],
+  ordersByStatus: [
+    { name: 'Completed', value: 84, color: '#20B8A5' },
+    { name: 'In Manufacturing', value: 18, color: '#FF7138' },
+    { name: 'Material Prep', value: 9, color: '#111111' },
+    { name: 'Dispatched', value: 12, color: '#858585' },
+  ],
+  productionPerformance: [
+    { week: 'W1', efficiency: 92, target: 88 },
+    { week: 'W2', efficiency: 94, target: 88 },
+    { week: 'W3', efficiency: 91, target: 88 },
+    { week: 'W4', efficiency: 96, target: 88 },
+  ],
+  categoryRevenue: [
+    { name: 'Brake Systems', value: 34, color: '#FF7138' },
+    { name: 'Alloy Wheels', value: 28, color: '#20B8A5' },
+    { name: 'Lighting & LEDs', value: 18, color: '#1B1B1B' },
+    { name: 'Suspension', value: 12, color: '#858585' },
+    { name: 'Others', value: 8, color: '#E5E7EB' },
+  ],
+  customerEnquiries: [
+    { day: 'Mon', enquiries: 14 },
+    { day: 'Tue', enquiries: 22 },
+    { day: 'Wed', enquiries: 31 },
+    { day: 'Thu', enquiries: 28 },
+    { day: 'Fri', enquiries: 36 },
+    { day: 'Sat', enquiries: 19 },
+    { day: 'Sun', enquiries: 11 },
+  ],
+  monthlyOrders: [
+    { month: 'May', count: 18 },
+    { month: 'Jun', count: 24 },
+    { month: 'Jul', count: 29 },
+    { month: 'Aug', count: 26 },
+    { month: 'Sep', count: 35 },
+    { month: 'Oct', count: 42 },
+  ],
+};
+
