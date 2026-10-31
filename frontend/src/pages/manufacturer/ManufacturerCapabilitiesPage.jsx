@@ -49,46 +49,54 @@ export const ManufacturerCapabilitiesPage = () => {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {profile.machines.map((machine) => (
-            <Card key={machine.id} className="flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <Badge variant="teal" size="sm">
-                    {machine.type}
-                  </Badge>
-                  <span className="text-xs font-mono text-[#858585]">
-                    Qty: {machine.quantity} Active
+          {(profile?.machines || []).map((machine, idx) => {
+            const envelopeStr = machine.max_envelope_mm?.x
+              ? `${machine.max_envelope_mm.x} × ${machine.max_envelope_mm.y} × ${machine.max_envelope_mm.z} mm`
+              : (machine.envelope || 'Standard Machining Envelope');
+            const toleranceStr = machine.tolerance_mm || machine.accuracy || machine.resolution || '0.005';
+            const quantity = machine.quantity || 1;
+
+            return (
+              <Card key={machine.id || machine.name || idx} className="flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <Badge variant="teal" size="sm">
+                      {machine.type}
+                    </Badge>
+                    <span className="text-xs font-mono text-[#858585]">
+                      Qty: {quantity} Active
+                    </span>
+                  </div>
+
+                  <h3 className="text-base font-bold font-heading text-[#111111] mb-1">
+                    {machine.name}
+                  </h3>
+                  <p className="text-xs font-mono text-[#858585] mb-4">
+                    Tolerance: ±{toleranceStr} mm
+                  </p>
+
+                  <div className="p-3 bg-[#F5F5F3] rounded-xl border border-gray-200 text-xs font-mono space-y-1.5">
+                    <div className="text-[10px] text-[#858585] uppercase tracking-wider font-semibold">
+                      Max Workpiece Envelope
+                    </div>
+                    <div className="text-[#111111] font-bold">
+                      {envelopeStr}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-mono">
+                  <span className="text-[#20B8A5] flex items-center gap-1 font-semibold">
+                    <CheckCircle2 size={13} />
+                    Calibrated
+                  </span>
+                  <span className="text-[#858585]">
+                    {machine.status || '99.4% Uptime'}
                   </span>
                 </div>
-
-                <h3 className="text-base font-bold font-heading text-[#111111] mb-1">
-                  {machine.name}
-                </h3>
-                <p className="text-xs font-mono text-[#858585] mb-4">
-                  Tolerance: ±{machine.tolerance_mm} mm
-                </p>
-
-                <div className="p-3 bg-[#F5F5F3] rounded-xl border border-gray-200 text-xs font-mono space-y-1.5">
-                  <div className="text-[10px] text-[#858585] uppercase tracking-wider font-semibold">
-                    Max Workpiece Envelope
-                  </div>
-                  <div className="text-[#111111] font-bold">
-                    {machine.max_envelope_mm.x} × {machine.max_envelope_mm.y} × {machine.max_envelope_mm.z} mm
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-mono">
-                <span className="text-[#20B8A5] flex items-center gap-1 font-semibold">
-                  <CheckCircle2 size={13} />
-                  Calibrated
-                </span>
-                <span className="text-[#858585]">
-                  99.4% Uptime
-                </span>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
       </div>
 

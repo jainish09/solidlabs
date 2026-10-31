@@ -20,30 +20,29 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200/90 shadow-sm hover:border-[#FF7138]/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+    <div className="bg-white rounded-2xl border border-teal-100 shadow-sm hover:border-teal-500 hover:shadow-lg hover:shadow-teal-900/5 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
       <div>
         {/* Product Image Container */}
-        <div className="relative h-48 w-full overflow-hidden bg-gray-100">
+        <div className="relative h-48 w-full overflow-hidden bg-slate-50">
           <img
             src={product.image}
             alt={product.name}
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
             onError={(e) => {
-              // Fallback image in case of external network block
               e.target.src = 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80';
             }}
           />
 
           {/* Top Pill Badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 pointer-events-none">
-            <Badge variant="orange" size="xs">
+            <Badge variant="teal" size="xs">
               Demo Record
             </Badge>
             {product.customizationAvailable && (
-              <Badge variant="teal" size="xs">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white/95 text-teal-800 border border-teal-200 shadow-xs">
                 AI Customizable
-              </Badge>
+              </span>
             )}
           </div>
 
@@ -57,7 +56,7 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
             className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
               isWishlisted
                 ? 'bg-rose-50 text-rose-500 shadow-md scale-110'
-                : 'bg-white/90 text-gray-400 hover:text-rose-500 hover:bg-white shadow-sm'
+                : 'bg-white/90 text-slate-400 hover:text-rose-500 hover:bg-white shadow-sm'
             }`}
             title={isWishlisted ? 'Remove from wishlist' : 'Save to wishlist'}
           >
@@ -65,7 +64,7 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
           </button>
 
           {/* MOQ Bottom Strip */}
-          <div className="absolute bottom-2 left-2.5 bg-[#111111]/85 backdrop-blur-xs text-white text-[10px] font-mono px-2 py-0.5 rounded-md">
+          <div className="absolute bottom-2 left-2.5 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-mono px-2 py-0.5 rounded-md">
             MOQ: {product.moq} units
           </div>
         </div>
@@ -73,51 +72,51 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
         {/* Content Section */}
         <div className="p-4 space-y-3">
           {/* Category & Rating */}
-          <div className="flex items-center justify-between text-xs font-mono text-[#858585]">
-            <span className="truncate max-w-[65%] text-[#FF7138] font-medium">{product.category}</span>
+          <div className="flex items-center justify-between text-xs font-mono">
+            <span className="truncate max-w-[65%] text-teal-700 font-bold">{product.category}</span>
             <div className="flex items-center gap-1 text-amber-500">
               <Star size={12} fill="currentColor" />
-              <span className="font-bold text-[#111111]">{product.manufacturer.rating}</span>
-              <span className="text-[10px] text-[#858585]">({product.manufacturer.reviewCount})</span>
+              <span className="font-bold text-slate-900">{product.manufacturer.rating}</span>
+              <span className="text-[10px] text-slate-500">({product.manufacturer.reviewCount})</span>
             </div>
           </div>
 
           {/* Product Name */}
           <h3
             onClick={() => onViewDetails(product)}
-            className="text-sm font-bold font-heading text-[#111111] line-clamp-2 hover:text-[#FF7138] cursor-pointer transition-colors leading-snug"
+            className="text-sm font-bold font-heading text-slate-900 line-clamp-2 hover:text-teal-700 cursor-pointer transition-colors leading-snug"
           >
             {product.name}
           </h3>
 
           {/* Price Range */}
           <div className="flex items-baseline gap-1.5">
-            <span className="text-base sm:text-lg font-extrabold font-heading text-[#111111]">
+            <span className="text-base sm:text-lg font-extrabold font-heading text-slate-900">
               {product.priceINR}
             </span>
-            <span className="text-[10px] text-[#858585] font-mono">/ unit</span>
+            <span className="text-[10px] text-slate-500 font-mono">/ unit</span>
           </div>
 
           {/* 3 Key Technical Specifications */}
-          <div className="bg-[#F5F5F3] p-2.5 rounded-xl space-y-1 text-[11px] font-mono text-[#111111]/80">
+          <div className="bg-teal-50/50 p-2.5 rounded-xl border border-teal-100/70 space-y-1 text-[11px] font-mono text-slate-700">
             {product.specifications.slice(0, 3).map((spec, i) => (
               <div key={i} className="flex justify-between items-center text-[10px] truncate">
-                <span className="text-[#858585] truncate">{spec.label}:</span>
-                <span className="font-semibold text-[#111111] truncate ml-1">{spec.value}</span>
+                <span className="text-slate-500 truncate">{spec.label}:</span>
+                <span className="font-semibold text-slate-900 truncate ml-1">{spec.value}</span>
               </div>
             ))}
           </div>
 
           {/* Manufacturer Snippet */}
-          <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-[#858585]">
+          <div className="pt-2 border-t border-teal-50 flex items-center justify-between text-[11px]">
             <div className="truncate max-w-[70%]">
-              <span className="block font-medium text-[#111111] truncate">{product.manufacturer.name}</span>
-              <span className="flex items-center gap-1 text-[10px]">
-                <MapPin size={10} className="text-[#FF7138] shrink-0" />
+              <span className="block font-semibold text-slate-900 truncate">{product.manufacturer.name}</span>
+              <span className="flex items-center gap-1 text-[10px] text-slate-500">
+                <MapPin size={10} className="text-teal-600 shrink-0" />
                 <span className="truncate">{product.manufacturer.location}</span>
               </span>
             </div>
-            <span className="text-[10px] font-mono text-[#20B8A5] font-semibold bg-[#20B8A5]/10 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-mono text-teal-800 font-bold bg-teal-100/70 px-2 py-0.5 rounded-md border border-teal-200/60">
               {product.manufacturer.responseRate} resp.
             </span>
           </div>
@@ -131,7 +130,7 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
             variant="outline"
             size="sm"
             onClick={() => onViewDetails(product)}
-            className="w-full text-xs"
+            className="w-full text-xs border-teal-200 text-slate-700 hover:bg-teal-50 hover:text-teal-900"
           >
             View Details
           </Button>
@@ -141,7 +140,7 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
             size="sm"
             onClick={() => navigate(`/customize/${product.id}`)}
             leftIcon={<Sliders size={12} />}
-            className="w-full text-xs"
+            className="w-full text-xs bg-teal-600 hover:bg-teal-700 text-white shadow-xs"
           >
             Customize
           </Button>
@@ -150,9 +149,9 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
         <button
           type="button"
           onClick={handleDirectChat}
-          className="w-full py-1.5 text-center text-xs font-mono text-[#858585] hover:text-[#FF7138] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+          className="w-full py-1.5 text-center text-xs font-mono text-slate-600 hover:text-teal-800 hover:bg-teal-50/50 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
         >
-          <MessageSquare size={12} className="text-[#FF7138]" />
+          <MessageSquare size={12} className="text-teal-600" />
           <span>Chat with Manufacturer</span>
         </button>
       </div>
@@ -161,4 +160,3 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
 };
 
 export default ProductCard;
-

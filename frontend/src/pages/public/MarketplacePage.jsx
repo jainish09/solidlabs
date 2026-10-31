@@ -77,16 +77,18 @@ export const MarketplacePage = () => {
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-teal-100 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="orange" size="sm" dot>B2B Automotive Marketplace</Badge>
-            <Badge variant="teal" size="sm">18 Production Categories</Badge>
+            <Badge variant="teal" size="sm" dot>B2B Automotive Marketplace</Badge>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white text-teal-800 border border-teal-200">
+              18 Production Categories
+            </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-[#111111] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 tracking-tight">
             Automotive Components & OEM Catalog
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-[#858585] font-body">
+          <p className="mt-1 text-xs sm:text-sm text-slate-600 font-body">
             Browse verified automotive systems, compare Indian Rupee wholesale pricing, and customize directly with AI assistance.
           </p>
         </div>
@@ -97,6 +99,7 @@ export const MarketplacePage = () => {
             size="sm"
             onClick={() => navigate('/customize/prod_001')}
             leftIcon={<PlusCircle size={15} />}
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold"
           >
             Post Custom Requirement
           </Button>
@@ -104,7 +107,7 @@ export const MarketplacePage = () => {
       </div>
 
       {/* Search and Filters Strip */}
-      <div className="space-y-4 bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/90 shadow-xs">
+      <div className="space-y-4 bg-white p-4 sm:p-5 rounded-2xl border border-teal-100 shadow-xs">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
           {/* Search bar (6 Cols) */}
           <div className="md:col-span-6">
@@ -121,7 +124,7 @@ export const MarketplacePage = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs text-[#111111] font-medium focus:ring-2 focus:ring-[#FF7138] focus:outline-none"
+              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-teal-500 focus:outline-none"
             >
               {PRODUCT_CATEGORIES.map((c) => (
                 <option key={c} value={c}>{c}</option>
@@ -134,7 +137,7 @@ export const MarketplacePage = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full bg-white border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs text-[#111111] font-medium focus:ring-2 focus:ring-[#FF7138] focus:outline-none"
+              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-teal-500 focus:outline-none"
             >
               <option value="featured">Sort: Featured First</option>
               <option value="price_asc">Price: Low to High (INR)</option>
@@ -145,29 +148,29 @@ export const MarketplacePage = () => {
         </div>
 
         {/* Filter Toggle Badges */}
-        <div className="pt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="pt-2 border-t border-teal-50 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => setCustomizableOnly(!customizableOnly)}
               className={`px-3 py-1 rounded-lg font-mono border transition-colors cursor-pointer ${
                 customizableOnly
-                  ? 'bg-[#20B8A5]/10 border-[#20B8A5] text-[#20B8A5] font-bold'
-                  : 'bg-gray-50 border-gray-200 text-[#858585] hover:text-[#111111]'
+                  ? 'bg-teal-50 border-teal-300 text-teal-800 font-bold'
+                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-teal-900'
               }`}
             >
               ✨ AI Customizable Only
             </button>
 
-            <span className="text-[#858585] font-mono">
-              Showing <strong className="text-[#111111]">{filteredProducts.length}</strong> of 18 records
+            <span className="text-slate-500 font-mono">
+              Showing <strong className="text-slate-900">{filteredProducts.length}</strong> of 18 records
             </span>
           </div>
 
           <button
             type="button"
             onClick={handleResetFilters}
-            className="text-xs font-mono text-[#858585] hover:text-[#FF7138] flex items-center gap-1 transition-colors cursor-pointer"
+            className="text-xs font-mono text-slate-500 hover:text-teal-700 flex items-center gap-1 transition-colors cursor-pointer"
           >
             <RotateCcw size={13} />
             <span>Reset Filters</span>
@@ -188,12 +191,12 @@ export const MarketplacePage = () => {
           ))}
         </div>
       ) : (
-        <div className="p-12 text-center bg-white rounded-2xl border border-gray-200 space-y-3">
-          <p className="text-base font-bold font-heading text-[#111111]">No components match your search filters.</p>
-          <p className="text-xs text-[#858585] font-body max-w-md mx-auto">
+        <div className="p-12 text-center bg-white rounded-2xl border border-teal-100 space-y-3">
+          <p className="text-base font-bold font-heading text-slate-900">No components match your search filters.</p>
+          <p className="text-xs text-slate-600 font-body max-w-md mx-auto">
             Try adjusting your search query, selecting "All Categories", or clearing the price threshold.
           </p>
-          <Button variant="outline" size="sm" onClick={handleResetFilters}>
+          <Button variant="outline" size="sm" onClick={handleResetFilters} className="border-teal-200 text-teal-800">
             Reset All Filters
           </Button>
         </div>
@@ -209,7 +212,7 @@ export const MarketplacePage = () => {
           maxWidth="max-w-2xl"
         >
           <div className="space-y-4">
-            <div className="h-60 w-full rounded-xl overflow-hidden bg-gray-100">
+            <div className="h-60 w-full rounded-xl overflow-hidden bg-slate-100">
               <img
                 src={activeDetailProduct.image}
                 alt={activeDetailProduct.name}
@@ -217,40 +220,40 @@ export const MarketplacePage = () => {
               />
             </div>
 
-            <p className="text-xs text-[#858585] font-body leading-relaxed">
+            <p className="text-xs text-slate-600 font-body leading-relaxed">
               {activeDetailProduct.description}
             </p>
 
-            <div className="grid grid-cols-2 gap-2 text-xs font-mono p-3 bg-[#F5F5F3] rounded-xl">
-              <div><span className="text-[#858585]">Price:</span> <span className="font-bold">{activeDetailProduct.priceINR}</span></div>
-              <div><span className="text-[#858585]">MOQ:</span> <span className="font-bold">{activeDetailProduct.moq} pcs</span></div>
-              <div><span className="text-[#858585]">Supplier:</span> <span className="text-[#20B8A5]">{activeDetailProduct.manufacturer.name}</span></div>
-              <div><span className="text-[#858585]">Lead Time:</span> <span className="text-[#FF7138]">{activeDetailProduct.deliveryTimeline}</span></div>
+            <div className="grid grid-cols-2 gap-2 text-xs font-mono p-3 bg-teal-50/60 rounded-xl border border-teal-100">
+              <div><span className="text-slate-500">Price:</span> <span className="font-bold text-slate-900">{activeDetailProduct.priceINR}</span></div>
+              <div><span className="text-slate-500">MOQ:</span> <span className="font-bold text-slate-900">{activeDetailProduct.moq} pcs</span></div>
+              <div><span className="text-slate-500">Supplier:</span> <span className="text-teal-700 font-bold">{activeDetailProduct.manufacturer.name}</span></div>
+              <div><span className="text-slate-500">Lead Time:</span> <span className="text-teal-800 font-bold">{activeDetailProduct.deliveryTimeline}</span></div>
             </div>
 
             {/* Specifications */}
             <div className="space-y-1">
-              <span className="text-[10px] font-mono uppercase text-[#858585]">Key Technical Specs:</span>
+              <span className="text-[10px] font-mono uppercase text-slate-500 font-bold">Key Technical Specs:</span>
               <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
                 {activeDetailProduct.specifications.map((s, i) => (
-                  <div key={i} className="p-2 rounded bg-white border border-gray-100 flex justify-between">
-                    <span className="text-[#858585]">{s.label}:</span>
-                    <span className="font-semibold">{s.value}</span>
+                  <div key={i} className="p-2 rounded bg-white border border-teal-100 flex justify-between">
+                    <span className="text-slate-500">{s.label}:</span>
+                    <span className="font-semibold text-slate-900">{s.value}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-gray-100 flex-wrap">
-              <Button variant="outline" size="sm" onClick={() => setActiveDetailProduct(null)}>
+            <div className="flex justify-end gap-2 pt-3 border-t border-teal-100 flex-wrap">
+              <Button variant="outline" size="sm" onClick={() => setActiveDetailProduct(null)} className="border-slate-200">
                 Close
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleChatWithManufacturer(activeDetailProduct)}
-                leftIcon={<MessageSquare size={14} className="text-[#FF7138]" />}
-                className="hover:border-[#FF7138]"
+                leftIcon={<MessageSquare size={14} className="text-teal-600" />}
+                className="border-teal-200 hover:border-teal-400 text-teal-800 hover:bg-teal-50"
               >
                 Chat with Manufacturer
               </Button>
@@ -263,6 +266,7 @@ export const MarketplacePage = () => {
                   navigate(`/customize/${id}`);
                 }}
                 leftIcon={<Sliders size={14} />}
+                className="bg-teal-600 hover:bg-teal-700 text-white"
               >
                 Customize with AI
               </Button>

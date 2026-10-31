@@ -23,7 +23,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '12,000 sets / month',
     deliveryTimeline: '10 - 14 Business Days',
-    image: 'https://images.unsplash.com/photo-1600790142055-619df03207e6?auto=format&fit=crop&w=800&q=80',
+    image: '/images/apexflow-brake-pads.jpg',
     specifications: [
       { label: 'Friction Coefficient', value: '0.45 - 0.52 μ' },
       { label: 'Max Operating Temp', value: '750°C' },
@@ -62,7 +62,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '2,500 wheels / month',
     deliveryTimeline: '14 - 18 Business Days',
-    image: 'https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&w=800&q=80',
+    image: '/images/veloce-forged-monoblock-wheel.jpg',
     specifications: [
       { label: 'Diameter & Width', value: '19" × 8.5J' },
       { label: 'Bolt Pattern (PCD)', value: '5 × 114.3 mm' },
@@ -102,7 +102,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '4,000 units / month',
     deliveryTimeline: '12 - 16 Business Days',
-    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+    image: '/images/luminamatrix-led-headlight.jpg',
     specifications: [
       { label: 'Luminous Flux', value: '4,200 Lumens' },
       { label: 'Colour Temperature', value: '6,000K Pure White' },
@@ -180,7 +180,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '1,800 units / month',
     deliveryTimeline: '12 - 15 Business Days',
-    image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80',
+    image: '/images/hyperbore-camshaft.jpg',
     specifications: [
       { label: 'Surface Hardness', value: '58 - 62 HRC' },
       { label: 'Journal Runout', value: '< 0.005 mm' },
@@ -218,7 +218,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '3,000 fascias / month',
     deliveryTimeline: '14 - 20 Business Days',
-    image: 'https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=800&q=80',
+    image: '/images/aeroshield-front-bumper.jpg',
     specifications: [
       { label: 'Wall Thickness', value: '3.2 mm ± 0.2 mm' },
       { label: 'Impact Absorption', value: 'ECE 42 Pedestrian Safety Standard' },
@@ -256,7 +256,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '9,500 discs / month',
     deliveryTimeline: '8 - 12 Business Days',
-    image: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80',
+    image: '/images/duratorque-clutch-plate.jpg',
     specifications: [
       { label: 'Disc Outer Diameter', value: '240 mm' },
       { label: 'Spline Teeth Count', value: '24T (26.0 mm hub diameter)' },
@@ -294,7 +294,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '40,000 filters / month',
     deliveryTimeline: '5 - 8 Business Days',
-    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+    image: '/images/pureflow-air-filter.jpg',
     specifications: [
       { label: 'Efficiency Rating', value: '99.6% @ ISO 5011 Test Dust' },
       { label: 'Pressure Drop', value: '< 1.2 kPa @ 800 m³/h' },
@@ -600,7 +600,7 @@ export const AUTOMOTIVE_PRODUCTS = [
     customizationAvailable: true,
     productionCapacity: '25,000 tyres / month',
     deliveryTimeline: '6 - 9 Business Days',
-    image: 'https://images.unsplash.com/photo-1578844251758-2f71da64c96f?auto=format&fit=crop&w=800&q=80',
+    image: '/images/terragrip-all-terrain-tyre.jpg',
     specifications: [
       { label: 'Tyre Size', value: '215/65 R16' },
       { label: 'Load & Speed Index', value: '98H (750 kg / 210 km/h)' },

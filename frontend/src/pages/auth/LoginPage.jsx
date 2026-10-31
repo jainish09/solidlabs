@@ -25,16 +25,16 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#F5F5F3]">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#F8FAFA]">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#111111] text-white shadow-xl shadow-black/10 border border-gray-800 mb-2">
-            <span className="font-heading font-black text-2xl text-[#FF7138]">SL</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-teal-600 text-white shadow-xl shadow-teal-600/20 mb-2">
+            <span className="font-heading font-black text-2xl text-white">SL</span>
           </div>
-          <h2 className="text-2xl font-black font-heading text-[#111111] tracking-tight">
+          <h2 className="text-2xl font-black font-heading text-slate-900 tracking-tight">
             Sign in to SolidLabs
           </h2>
-          <p className="text-xs text-[#858585] font-body">
+          <p className="text-xs text-slate-500 font-body">
             Access your AI-assisted engineering workspace & manufacturing orders
           </p>
           <div className="flex justify-center pt-1">
@@ -42,7 +42,7 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <Card>
+        <Card className="bg-white border border-teal-100 shadow-sm">
           <form onSubmit={handleLogin} className="space-y-4">
             <Input
               label="Demo Account Email"
@@ -62,7 +62,7 @@ export const LoginPage = () => {
             />
 
             <div className="space-y-2 pt-1">
-              <label className="block text-xs font-mono uppercase tracking-wider text-[#858585] font-semibold">
+              <label className="block text-xs font-mono uppercase tracking-wider text-slate-600 font-semibold">
                 Select Workspace Persona
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -74,15 +74,15 @@ export const LoginPage = () => {
                   }}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                     selectedRole === 'customer'
-                      ? 'border-[#FF7138] bg-[#FF7138]/5 shadow-sm'
-                      : 'border-gray-200 bg-white hover:bg-gray-50'
+                      ? 'border-teal-600 bg-teal-50 shadow-xs'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
                   }`}
                 >
-                  <div className="flex items-center gap-1.5 mb-1 text-[#111111]">
-                    <UserCheck size={16} className={selectedRole === 'customer' ? 'text-[#FF7138]' : 'text-gray-400'} />
+                  <div className="flex items-center gap-1.5 mb-1 text-slate-900">
+                    <UserCheck size={16} className={selectedRole === 'customer' ? 'text-teal-700' : 'text-slate-400'} />
                     <span className="text-xs font-bold font-heading">Customer</span>
                   </div>
-                  <p className="text-[10px] text-[#858585] font-mono leading-tight">
+                  <p className="text-[10px] text-slate-500 font-mono leading-tight">
                     OEM Engineer / CAD Designer
                   </p>
                 </button>
@@ -95,16 +95,16 @@ export const LoginPage = () => {
                   }}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                     selectedRole === 'manufacturer'
-                      ? 'border-[#20B8A5] bg-[#20B8A5]/5 shadow-sm'
-                      : 'border-gray-200 bg-white hover:bg-gray-50'
+                      ? 'border-teal-600 bg-teal-50 shadow-xs'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
                   }`}
                 >
-                  <div className="flex items-center gap-1.5 mb-1 text-[#111111]">
-                    <Factory size={16} className={selectedRole === 'manufacturer' ? 'text-[#20B8A5]' : 'text-gray-400'} />
+                  <div className="flex items-center gap-1.5 mb-1 text-slate-900">
+                    <Factory size={16} className={selectedRole === 'manufacturer' ? 'text-teal-700' : 'text-slate-400'} />
                     <span className="text-xs font-bold font-heading">Manufacturer</span>
                   </div>
-                  <p className="text-[10px] text-[#858585] font-mono leading-tight">
-                    CNC Plant / Foundry Partner
+                  <p className="text-[10px] text-slate-500 font-mono leading-tight">
+                    Machine Shop / CNC Partner
                   </p>
                 </button>
               </div>
@@ -113,21 +113,22 @@ export const LoginPage = () => {
             <Button
               type="submit"
               variant="primary"
-              className="w-full mt-3"
+              size="lg"
+              className="w-full font-bold bg-teal-600 hover:bg-teal-700 text-white mt-2 shadow-xs"
               rightIcon={<ArrowRight size={16} />}
             >
-              Enter {selectedRole === 'customer' ? 'Hardware Engineer' : 'Manufacturer'} Portal
+              Sign In to Workspace
             </Button>
           </form>
-
-          <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-[11px] font-mono text-[#858585]">
-            <span className="flex items-center gap-1 text-[#20B8A5]">
-              <ShieldCheck size={13} />
-              Session Local Mock State
-            </span>
-            <span>No backend credentials required</span>
-          </div>
         </Card>
+
+        {/* Security & Credentials Notice */}
+        <div className="p-3.5 bg-teal-50/50 rounded-xl border border-teal-100 flex items-start gap-2.5 text-xs font-mono text-slate-600">
+          <ShieldCheck size={16} className="text-teal-700 shrink-0 mt-0.5" />
+          <p className="text-[11px] leading-relaxed">
+            All accounts in this demonstration connect to the local in-memory shared state. Changes made in Customer view immediately reflect in Manufacturer view.
+          </p>
+        </div>
       </div>
     </div>
   );

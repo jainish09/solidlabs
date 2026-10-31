@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import Card, { CardHeader, CardTitle, CardDescription, CardContent } from '../../components/common/Card';
+import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
+import Modal from '../../components/common/Modal';
 import {
   FolderKanban,
   Truck,
@@ -19,112 +20,198 @@ import {
   TrendingUp,
   Box,
   MessageSquare,
+  ShieldCheck,
+  Layers,
+  Activity,
+  AlertCircle,
+  ExternalLink,
 } from 'lucide-react';
 
 export const CustomerDashboardPage = () => {
-  const { user, requirements, quotations, orders, totalUnreadMessages } = useAuth();
+  const { user, requirements, quotations, orders, totalUnreadMessages, acceptQuotation, showToast } = useAuth();
   const navigate = useNavigate();
 
-  const totalProjects = requirements.length + 3; // Total active engineering projects
+  // Confirmation modal state for accepting quotation from overview
+  const [acceptingQuote, setAcceptingQuote] = useState(null);
+
+  const totalProjects = requirements.length + 3; // Active projects + initial registered CAD revisions
   const activeOrders = orders.filter((o) => o.currentStageIndex < 6);
-  const completedOrders = orders.filter((o) => o.currentStageIndex === 6);
   const pendingQuotations = quotations.filter((q) => q.status === 'pending');
+  const qualityVerifiedOrders = orders.filter((o) => o.qualityReportReady || o.currentStageIndex >= 3);
+
+  const handleConfirmAcceptQuote = () => {
+    if (!acceptingQuote) return;
+    const newOrder = acceptQuotation(acceptingQuote.id);
+    setAcceptingQuote(null);
+    if (newOrder) {
+      navigate('/customer/orders');
+    }
+  };
+
+  // Chronological activity log from actual customer events
+  const RECENT_ACTIVITIES = [
+    {
+      type: 'dispatch',
+      title: 'Product Dispatched via BlueDart Express',
+      detail: 'Consignment BD-9041-8812-IN for 80 units of Carbon-Ceramic Brake Pads is in transit to Pune Hub.',
+      time: '2 hours ago',
+      icon: <Truck size={14} className="text-teal-600" />,
+      dotColor: 'bg-teal-500',
+    },
+    {
+      type: 'inspection',
+      title: 'Zeiss CMM Inspection Passed (Lot of 25)',
+      detail: 'Sundaram Advanced Metrology completed dimensional and hydrostatic tests on Cold-Plate batch.',
+      time: 'Yesterday, 4:30 PM',
+      icon: <ShieldCheck size={14} className="text-emerald-600" />,
+      dotColor: 'bg-emerald-500',
+    },
+    {
+      type: 'manufacturing',
+      title: '5-Axis Spindle Cutting Commenced',
+      detail: 'AeroForge Dynamics initiated roughing cycle on Haas VF-4SS for 19" Wheel Hub.',
+      time: 'Oct 29, 2:15 PM',
+      icon: <Activity size={14} className="text-teal-700" />,
+      dotColor: 'bg-teal-600',
+    },
+    {
+      type: 'quote_accepted',
+      title: 'Quotation Accepted & Order SL-9041 Created',
+      detail: 'Quotation QUO-2026-501 accepted from Continental Rubber; initial payment approved.',
+      time: 'Oct 28, 11:30 AM',
+      icon: <CheckCircle2 size={14} className="text-teal-700" />,
+      dotColor: 'bg-teal-600',
+    },
+    {
+      type: 'quote_received',
+      title: 'New Formal Quotation Received',
+      detail: 'Apex Precision Auto Rubber submitted bid QUO-2026-502 for ₹5,27,000.',
+      time: 'Oct 28, 09:15 AM',
+      icon: <Receipt size={14} className="text-slate-700" />,
+      dotColor: 'bg-slate-500',
+    },
+    {
+      type: 'dfm',
+      title: 'DFM Geometric Audit Passed (100% Watertight)',
+      detail: 'Euler 2-manifold check (χ=2) completed with zero non-manifold edges.',
+      time: 'Oct 27, 3:00 PM',
+      icon: <FileCheck2 size={14} className="text-teal-600" />,
+      dotColor: 'bg-teal-500',
+    },
+    {
+      type: 'requirement',
+      title: 'Requirement REQ-2026-105 Broadcasted',
+      detail: 'Forged Monoblock 19" Alloy Wheel RFQ distributed to verified machine shops.',
+      time: 'Oct 26, 10:00 AM',
+      icon: <PlusCircle size={14} className="text-teal-600" />,
+      dotColor: 'bg-teal-600',
+    },
+  ];
 
   return (
     <div className="space-y-8">
-      {/* Welcome Header */}
-      <div className="bg-white border border-gray-200/90 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xs">
+      {/* 1. Welcome & Activity Header */}
+      <div className="bg-white border border-teal-100 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xs">
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Badge variant="orange" size="xs" dot>Customer Engineering Portal</Badge>
-            <Badge variant="teal" size="xs">{user.organization}</Badge>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="teal" size="xs" dot>Customer Manufacturing Workspace</Badge>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-teal-50 text-teal-800 border border-teal-200">
+              {user.organization}
+            </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-[#111111] tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-slate-900 tracking-tight">
             Welcome back, {user.name}
           </h1>
-          <p className="text-xs sm:text-sm text-[#858585] font-body max-w-xl">
-            Manage your automotive components, track machine spindle cutting in real-time, and compare supplier quotations in Indian Rupees.
+          <p className="text-xs sm:text-sm text-slate-600 font-body max-w-2xl leading-relaxed">
+            You currently have <strong className="text-slate-900">{activeOrders.length} active orders</strong> in production,{' '}
+            <strong className="text-teal-700">{pendingQuotations.length} pending quotations</strong> awaiting review, and{' '}
+            <strong className="text-slate-900">{qualityVerifiedOrders.length} batches</strong> certified by Zeiss CMM metrology.
           </p>
         </div>
 
-        {/* Quick Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        {/* Prominent CTA */}
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigate('/customer/messages')}
-            leftIcon={<MessageSquare size={15} className="text-[#FF7138]" />}
-            className="hover:border-[#FF7138]"
+            leftIcon={<MessageSquare size={15} className="text-teal-600" />}
+            className="border-teal-200 hover:border-teal-400 text-teal-800 hover:bg-teal-50"
           >
             <span>Messages</span>
             {totalUnreadMessages > 0 && (
-              <span className="ml-1 px-1.5 py-0.2 rounded-full bg-[#FF7138] text-white text-[10px] font-bold">
+              <span className="ml-1 px-1.5 py-0.2 rounded-full bg-teal-600 text-white text-[10px] font-bold">
                 {totalUnreadMessages}
               </span>
             )}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate('/cad-analyzer')}
-            leftIcon={<UploadCloud size={15} />}
-          >
-            Upload CAD
-          </Button>
+
           <Button
             variant="primary"
-            size="sm"
-            onClick={() => navigate('/customize/prod_001')}
-            leftIcon={<PlusCircle size={15} />}
+            size="md"
+            onClick={() => navigate('/customer/post-requirement')}
+            leftIcon={<PlusCircle size={16} />}
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold shadow-sm shadow-teal-600/25 px-5"
           >
-            Post Requirement
+            Post New Requirement
           </Button>
         </div>
       </div>
 
-      {/* 4 Stat Cards */}
+      {/* 2. Four Metric Summary Cards (All from customer data) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           {
-            label: 'Total Projects',
+            label: 'Active Projects',
             value: totalProjects,
-            note: 'Active CAD & RFQs',
-            icon: <FolderKanban size={22} className="text-[#FF7138]" />,
-            border: 'border-l-4 border-l-[#FF7138]',
+            note: `${requirements.length} Open RFQs + CAD Revisions`,
+            icon: <FolderKanban size={22} className="text-teal-700" />,
+            borderColor: 'border-l-4 border-l-teal-600',
+            link: '/customer/projects',
           },
           {
-            label: 'Active Orders',
+            label: 'Orders in Production',
             value: activeOrders.length,
-            note: 'In Machining / Metrology',
-            icon: <Truck size={22} className="text-[#20B8A5]" />,
-            border: 'border-l-4 border-l-[#20B8A5]',
+            note: 'CNC Spindle & Toolpath Active',
+            icon: <Truck size={22} className="text-teal-600" />,
+            borderColor: 'border-l-4 border-l-teal-500',
+            link: '/customer/orders',
           },
           {
-            label: 'Pending Quotations',
+            label: 'Awaiting My Approval',
             value: pendingQuotations.length,
-            note: 'Awaiting your review',
-            icon: <Receipt size={22} className="text-[#111111]" />,
-            border: 'border-l-4 border-l-[#111111]',
+            note: 'Formal Supplier Bids Ready',
+            icon: <Receipt size={22} className="text-teal-800" />,
+            borderColor: 'border-l-4 border-l-teal-800',
+            link: '/customer/quotations',
           },
           {
-            label: 'Completed Orders',
-            value: completedOrders.length + 5,
-            note: 'CMM Metrology Verified',
-            icon: <CheckCircle2 size={22} className="text-emerald-500" />,
-            border: 'border-l-4 border-l-emerald-500',
+            label: 'Quality Verified Orders',
+            value: qualityVerifiedOrders.length,
+            note: 'Zeiss & Hexagon CMM Passed',
+            icon: <ShieldCheck size={22} className="text-teal-600" />,
+            borderColor: 'border-l-4 border-l-teal-700',
+            link: '/customer/quality',
           },
         ].map((card, i) => (
-          <Card key={i} className={card.border}>
+          <Card
+            key={i}
+            hover
+            onClick={() => navigate(card.link)}
+            className={`p-5 bg-white border border-teal-100/90 ${card.borderColor} shadow-xs cursor-pointer transition-all`}
+          >
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-[11px] font-mono uppercase text-[#858585] tracking-wider">{card.label}</p>
-                <p className="text-3xl font-extrabold font-heading text-[#111111] mt-1">{card.value}</p>
-                <p className="text-[11px] text-[#20B8A5] font-mono mt-1 flex items-center gap-1">
+                <p className="text-[11px] font-mono uppercase text-slate-500 tracking-wider font-semibold">
+                  {card.label}
+                </p>
+                <p className="text-3xl font-extrabold font-heading text-slate-900 mt-1">{card.value}</p>
+                <p className="text-[11px] text-teal-700 font-mono mt-1.5 flex items-center gap-1 font-semibold">
                   <TrendingUp size={12} />
                   {card.note}
                 </p>
               </div>
-              <div className="p-2.5 bg-[#F5F5F3] rounded-xl">
+              <div className="p-2.5 bg-teal-50/80 rounded-xl border border-teal-100">
                 {card.icon}
               </div>
             </div>
@@ -132,176 +219,334 @@ export const CustomerDashboardPage = () => {
         ))}
       </div>
 
-      {/* Main Split: Order Activity (Left) & Recent Quotations / Projects (Right) */}
+      {/* 3. Main Operational Grid: Active Orders (Left) & Pending Quotations (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Active Production Tracking Orders (7 Cols) */}
+        {/* Left Column: Active Orders (7 Cols) */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold font-heading text-[#111111] flex items-center gap-2">
-              <Truck className="text-[#20B8A5]" size={18} />
-              <span>Live Order Activity & Production Stages</span>
+            <h2 className="text-base font-bold font-heading text-slate-900 flex items-center gap-2">
+              <Truck className="text-teal-600" size={18} />
+              <span>Active Orders in Manufacturing</span>
             </h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate('/customer/orders')}
               rightIcon={<ChevronRight size={14} />}
+              className="text-xs text-teal-800 hover:text-teal-900"
             >
-              All Orders
+              View All Orders
             </Button>
           </div>
 
-          <div className="space-y-3">
-            {orders.slice(0, 3).map((order) => {
-              const currentStage = order.stages[order.currentStageIndex];
+          <div className="space-y-4">
+            {activeOrders.length === 0 ? (
+              <Card className="p-8 text-center bg-white border border-teal-100 space-y-3">
+                <p className="text-sm text-slate-600">No orders currently in manufacturing.</p>
+                <Button variant="primary" size="sm" onClick={() => navigate('/customer/quotations')}>
+                  Review Received Quotations
+                </Button>
+              </Card>
+            ) : (
+              activeOrders.map((order) => {
+                const currentStage = order.stages[order.currentStageIndex];
+                const stagePct = Math.round(((order.currentStageIndex + 1) / order.stages.length) * 100);
 
-              return (
-                <Card
-                  key={order.id}
-                  hover
-                  onClick={() => navigate('/customer/orders')}
-                  className="space-y-3"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold text-[#FF7138]">{order.orderNumber}</span>
-                        <span className="text-xs text-gray-300">•</span>
-                        <span className="text-xs font-mono text-[#858585]">{order.category}</span>
-                      </div>
-                      <h3 className="text-sm font-bold font-heading text-[#111111] mt-0.5">
-                        {order.productName}
-                      </h3>
-                      <p className="text-xs text-[#858585] mt-0.5 font-body">
-                        Manufacturer: <strong className="text-[#111111]">{order.manufacturerName}</strong> • {order.quantity} units
-                      </p>
-                    </div>
-
-                    <div className="text-left sm:text-right shrink-0">
-                      <Badge variant="teal" size="sm" dot>
-                        {currentStage?.name || 'Production In Progress'}
-                      </Badge>
-                      <p className="text-[11px] font-mono text-emerald-600 font-bold mt-1">
-                        ₹{order.totalPriceINR.toLocaleString('en-IN')}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 7 Stage Visual Stepper Mini */}
-                  <div className="pt-2 border-t border-gray-100">
-                    <div className="grid grid-cols-7 gap-1">
-                      {order.stages.map((stg, idx) => (
-                        <div key={idx} className="space-y-1">
-                          <div
-                            className={`h-1.5 rounded-full ${
-                              stg.completed
-                                ? 'bg-[#20B8A5]'
-                                : stg.inProgress
-                                ? 'bg-[#FF7138] animate-pulse'
-                                : 'bg-gray-200'
-                            }`}
-                          />
+                return (
+                  <Card key={order.id} className="p-5 space-y-4 bg-white border border-teal-100 hover:border-teal-300 transition-all shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-teal-50">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-mono font-bold text-teal-800">{order.orderNumber}</span>
+                          <span className="text-xs text-slate-300">•</span>
+                          <span className="text-xs font-mono text-slate-500">{order.category}</span>
                         </div>
-                      ))}
+                        <h3 className="text-base font-bold font-heading text-slate-900 mt-0.5">
+                          {order.productName}
+                        </h3>
+                        <p className="text-xs text-slate-600 mt-0.5 font-body">
+                          Manufacturer: <strong className="text-slate-900">{order.manufacturerName}</strong> • {order.quantity} units
+                        </p>
+                      </div>
+
+                      <div className="text-left sm:text-right shrink-0">
+                        <Badge variant="teal" size="sm" dot>
+                          {currentStage?.name || 'In Production'}
+                        </Badge>
+                        <p className="text-sm font-extrabold font-heading text-slate-900 mt-1">
+                          ₹{order.totalPriceINR.toLocaleString('en-IN')}
+                        </p>
+                        <span className="text-[10px] font-mono text-slate-500 block">
+                          Est. Delivery: {order.expectedDeliveryDate || '2026-11-20'}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-[10px] font-mono text-[#858585] mt-1">
-                      <span>Carrier: {order.carrier} ({order.trackingNumber})</span>
-                      <span className="text-[#20B8A5]">Stage {order.currentStageIndex + 1} of 7</span>
+
+                    {/* Progress Indicator */}
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs font-mono">
+                        <span className="text-slate-500">Stage {order.currentStageIndex + 1} of 7: {currentStage?.name}</span>
+                        <span className="text-teal-700 font-bold">{stagePct}% Complete</span>
+                      </div>
+                      <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div
+                          className="bg-teal-600 h-2 rounded-full transition-all duration-500"
+                          style={{ width: `${stagePct}%` }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              );
-            })}
+
+                    {/* Action & Carrier Footer */}
+                    <div className="flex items-center justify-between pt-1 text-xs">
+                      <span className="text-[11px] font-mono text-slate-500">
+                        Carrier: {order.carrier} ({order.trackingNumber})
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="xs"
+                          onClick={() => navigate('/customer/tracking')}
+                          leftIcon={<Layers size={13} className="text-teal-600" />}
+                          className="border-teal-200 text-teal-800 hover:bg-teal-50"
+                        >
+                          Track Progress
+                        </Button>
+                        <Button
+                          variant="primary"
+                          size="xs"
+                          onClick={() => navigate('/customer/orders')}
+                          className="bg-teal-600 hover:bg-teal-700 text-white"
+                        >
+                          View Details
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })
+            )}
           </div>
         </div>
 
-        {/* Right Column: Recent Quotations & Requirements (5 Cols) */}
+        {/* Right Column: Pending Quotations & Quick Actions (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          {/* Recent Quotations Box */}
-          <div className="space-y-3">
+          {/* Pending Quotations Box */}
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold font-heading text-[#111111] flex items-center gap-2">
-                <Receipt className="text-[#FF7138]" size={18} />
-                <span>Recent Quotations</span>
+              <h2 className="text-base font-bold font-heading text-slate-900 flex items-center gap-2">
+                <Receipt className="text-teal-700" size={18} />
+                <span>Pending Quotations</span>
               </h2>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/customer/quotes')}
+                onClick={() => navigate('/customer/quotations')}
                 rightIcon={<ChevronRight size={14} />}
+                className="text-xs text-teal-800 hover:text-teal-900"
               >
-                Compare
+                Review & Compare ({pendingQuotations.length})
               </Button>
             </div>
 
             <div className="space-y-3">
-              {quotations.slice(0, 2).map((q) => (
-                <Card key={q.id} className="p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-[#FF7138]">{q.id}</span>
-                    <Badge variant={q.status === 'accepted' ? 'success' : 'orange'} size="xs">
-                      {q.status.toUpperCase()}
-                    </Badge>
-                  </div>
-                  <h4 className="text-xs font-bold font-heading text-[#111111]">{q.productName}</h4>
-                  <p className="text-[11px] text-[#858585] font-mono">From: {q.manufacturerName}</p>
-
-                  <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-sm font-extrabold font-heading text-emerald-600">
-                      ₹{q.finalPriceINR.toLocaleString('en-IN')}
-                    </span>
-                    <Button
-                      variant="primary"
-                      size="xs"
-                      onClick={() => navigate('/customer/quotes')}
-                    >
-                      Review & Accept
-                    </Button>
-                  </div>
+              {pendingQuotations.length === 0 ? (
+                <Card className="p-6 text-center bg-white border border-teal-100 space-y-2">
+                  <p className="text-xs text-slate-500">No pending quotations awaiting approval.</p>
+                  <Button variant="outline" size="xs" onClick={() => navigate('/customer/post-requirement')}>
+                    Broadcast New RFQ
+                  </Button>
                 </Card>
-              ))}
+              ) : (
+                pendingQuotations.slice(0, 2).map((q) => (
+                  <Card key={q.id} className="p-4 space-y-3 bg-white border border-teal-100 hover:border-teal-300 transition-all shadow-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono font-bold text-teal-800">{q.id}</span>
+                        <span className="text-xs text-slate-300">•</span>
+                        <span className="text-[11px] font-mono text-slate-500">{q.requirementId}</span>
+                      </div>
+                      <Badge variant="teal" size="xs">
+                        {q.status.toUpperCase()}
+                      </Badge>
+                    </div>
+
+                    <div>
+                      <h4 className="text-xs font-bold font-heading text-slate-900">{q.productName}</h4>
+                      <p className="text-[11px] text-slate-500 font-mono mt-0.5">By {q.manufacturerName}</p>
+                    </div>
+
+                    <div className="p-2.5 bg-teal-50/60 rounded-xl border border-teal-100/70 flex items-center justify-between text-xs font-mono">
+                      <div>
+                        <span className="text-[10px] text-slate-500 block">Total Bid</span>
+                        <span className="font-extrabold text-slate-900">₹{q.finalPriceINR.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[10px] text-slate-500 block">Est. Delivery</span>
+                        <span className="text-teal-800 font-semibold">{q.estimatedCompletionDays} Working Days</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-1 flex items-center justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        onClick={() => navigate('/customer/quotations')}
+                        className="border-teal-200 text-teal-800 hover:bg-teal-50"
+                      >
+                        Review & Compare
+                      </Button>
+                      <Button
+                        variant="primary"
+                        size="xs"
+                        onClick={() => setAcceptingQuote(q)}
+                        className="bg-teal-600 hover:bg-teal-700 text-white font-bold"
+                      >
+                        Accept Quotation
+                      </Button>
+                    </div>
+                  </Card>
+                ))
+              )}
             </div>
           </div>
 
-          {/* Quick Launchpad Actions */}
-          <Card className="bg-[#111111] text-white p-5 space-y-3 border-none">
-            <h3 className="text-sm font-bold font-heading text-white flex items-center gap-2">
-              <Sliders size={16} className="text-[#FF7138]" />
-              Engineering Quick Actions
-            </h3>
+          {/* Quick Actions (4 Convenient Actions) */}
+          <Card className="bg-gradient-to-br from-teal-900 via-teal-800 to-teal-950 text-white p-5 space-y-4 border border-teal-700/60 shadow-md">
+            <div>
+              <span className="text-[10px] uppercase font-mono tracking-widest text-teal-300 font-bold block">
+                Quick Shortcuts
+              </span>
+              <h3 className="text-sm font-bold font-heading text-white mt-0.5">
+                Customer Manufacturing Actions
+              </h3>
+            </div>
+
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
-                onClick={() => navigate('/customize/prod_001')}
-                className="p-2.5 rounded-xl bg-[#1B1B1B] hover:bg-[#252525] border border-white/5 text-left text-white/90 hover:text-white transition-colors cursor-pointer"
+                type="button"
+                onClick={() => navigate('/customer/post-requirement')}
+                className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
-                <span className="block font-bold text-[#FF7138]">AI Studio</span>
-                <span className="text-[10px] text-white/50">Customise part</span>
+                <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
+                  <PlusCircle size={14} />
+                  <span>Post Requirement</span>
+                </div>
+                <p className="text-[10px] text-teal-200/70 font-mono">5-step guided wizard</p>
               </button>
+
               <button
-                onClick={() => navigate('/cad-analyzer')}
-                className="p-2.5 rounded-xl bg-[#1B1B1B] hover:bg-[#252525] border border-white/5 text-left text-white/90 hover:text-white transition-colors cursor-pointer"
+                type="button"
+                onClick={() => navigate('/customer/post-requirement')}
+                className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
-                <span className="block font-bold text-[#20B8A5]">DFM Audit</span>
-                <span className="text-[10px] text-white/50">Mesh validation</span>
+                <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
+                  <UploadCloud size={14} />
+                  <span>Upload CAD Design</span>
+                </div>
+                <p className="text-[10px] text-teal-200/70 font-mono">STEP, STP, STL, IGES</p>
               </button>
+
               <button
-                onClick={() => navigate('/marketplace')}
-                className="p-2.5 rounded-xl bg-[#1B1B1B] hover:bg-[#252525] border border-white/5 text-left text-white/90 hover:text-white transition-colors cursor-pointer"
+                type="button"
+                onClick={() => navigate('/customer/quotations')}
+                className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
-                <span className="block font-bold text-white">Catalog</span>
-                <span className="text-[10px] text-white/50">18 Categories</span>
+                <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
+                  <Receipt size={14} />
+                  <span>View Quotations</span>
+                </div>
+                <p className="text-[10px] text-teal-200/70 font-mono">Side-by-side comparison</p>
               </button>
+
               <button
-                onClick={() => navigate('/customer/orders')}
-                className="p-2.5 rounded-xl bg-[#1B1B1B] hover:bg-[#252525] border border-white/5 text-left text-white/90 hover:text-white transition-colors cursor-pointer"
+                type="button"
+                onClick={() => navigate('/customer/tracking')}
+                className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
-                <span className="block font-bold text-emerald-400">Tracking</span>
-                <span className="text-[10px] text-white/50">7 Stages</span>
+                <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
+                  <Layers size={14} />
+                  <span>Track Orders</span>
+                </div>
+                <p className="text-[10px] text-teal-200/70 font-mono">7 production milestones</p>
               </button>
+            </div>
+          </Card>
+
+          {/* Recent Chronological Activity Feed */}
+          <Card className="p-5 space-y-4 bg-white border border-teal-100 shadow-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-teal-50">
+              <h3 className="text-xs font-bold font-heading text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <Activity size={14} className="text-teal-600" />
+                <span>Recent Manufacturing Activity</span>
+              </h3>
+              <span className="text-[10px] font-mono text-teal-700 font-semibold">Live Events</span>
+            </div>
+
+            <div className="space-y-3 relative before:absolute before:top-2 before:bottom-2 before:left-3 before:w-0.5 before:bg-teal-100">
+              {RECENT_ACTIVITIES.slice(0, 5).map((act, idx) => (
+                <div key={idx} className="flex items-start gap-3 relative pl-6">
+                  <span className={`absolute left-2 top-1.5 w-2.5 h-2.5 rounded-full ${act.dotColor} ring-4 ring-white`} />
+                  <div className="space-y-0.5 flex-1">
+                    <p className="text-xs font-bold font-heading text-slate-900">{act.title}</p>
+                    <p className="text-[11px] text-slate-600 font-body leading-snug">{act.detail}</p>
+                    <p className="text-[10px] font-mono text-slate-400">{act.time}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </Card>
         </div>
       </div>
+
+      {/* Confirmation Modal for Accepting Quotation */}
+      {acceptingQuote && (
+        <Modal
+          isOpen={!!acceptingQuote}
+          onClose={() => setAcceptingQuote(null)}
+          title="Confirm Quotation Acceptance"
+          description={`Initiate official purchase order for ${acceptingQuote.productName}`}
+          maxWidth="max-w-lg"
+        >
+          <div className="space-y-4">
+            <div className="p-4 bg-teal-50/70 rounded-2xl border border-teal-200/80 space-y-2 text-xs font-mono">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Quotation ID:</span>
+                <span className="font-bold text-slate-900">{acceptingQuote.id}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Supplier:</span>
+                <span className="font-bold text-slate-900">{acceptingQuote.manufacturerName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Total Invoiced Amount:</span>
+                <span className="font-bold text-teal-800 text-sm">₹{acceptingQuote.finalPriceINR.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Delivery Lead Time:</span>
+                <span className="font-semibold text-slate-900">{acceptingQuote.estimatedCompletionDays} Business Days</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed font-body">
+              Accepting this quotation converts Requirement <strong className="text-slate-900">{acceptingQuote.requirementId}</strong> into an active production order. The manufacturer will be notified immediately to allocate machine shop capacity.
+            </p>
+
+            <div className="flex justify-end gap-2.5 pt-3 border-t border-teal-100">
+              <Button variant="outline" size="sm" onClick={() => setAcceptingQuote(null)}>
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleConfirmAcceptQuote}
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold"
+              >
+                Accept & Create Order
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

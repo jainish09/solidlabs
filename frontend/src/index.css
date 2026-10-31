@@ -1,13 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-black: #111111;
-  --color-deep-charcoal: #1B1B1B;
+  --color-primary-black: #0F172A;
+  --color-deep-charcoal: #1E293B;
   --color-pure-white: #FFFFFF;
-  --color-soft-bg: #F5F5F3;
-  --color-signal-orange: #FF7138;
-  --color-accent-teal: #20B8A5;
-  --color-muted-grey: #858585;
+  --color-soft-bg: #F8FAFA;
+  --color-signal-orange: #0D9488;
+  --color-accent-teal: #0D9488;
+  --color-teal-50: #F0FDFA;
+  --color-teal-100: #CCFBF1;
+  --color-teal-600: #0D9488;
+  --color-teal-700: #0F766E;
+  --color-teal-800: #115E59;
+  --color-muted-grey: #64748B;
 
   --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -16,8 +21,8 @@
 
 body {
   margin: 0;
-  background-color: #F5F5F3;
-  color: #111111;
+  background-color: #F8FAFA;
+  color: #0F172A;
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,24 +30,25 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #0F172A;
 }
 
 code, pre, .font-tech {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar in Teal */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F5F5F3;
+  background: #F8FAFA;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: #99F6E4;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
+  background: #0D9488;
 }

@@ -66,8 +66,8 @@ export const CadViewer = ({
   // Material Colors
   const COLOR_PALETTE = {
     metal: { color: 0xc4ccd3, metalness: 0.85, roughness: 0.22, name: 'Machined 6061-T6' },
-    orange: { color: 0xff7138, metalness: 0.45, roughness: 0.35, name: 'Signal Orange Anodize' },
-    teal: { color: 0x29b5a5, metalness: 0.50, roughness: 0.30, name: 'SolidLabs Teal' },
+    orange: { color: 0x0d9488, metalness: 0.55, roughness: 0.25, name: 'Teal Anodize' },
+    teal: { color: 0x14b8a6, metalness: 0.50, roughness: 0.30, name: 'SolidLabs Teal' },
     steel: { color: 0x1c2935, metalness: 0.70, roughness: 0.40, name: 'Hardened Dark Steel' },
     white: { color: 0xf4f5f2, metalness: 0.15, roughness: 0.45, name: 'Polycarbonate Off-white' },
   };
@@ -385,8 +385,8 @@ export const CadViewer = ({
 
       {/* Drag & Drop Overlay */}
       {isDragging && (
-        <div className="absolute inset-0 bg-[#101820]/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center border-2 border-dashed border-[#FF7138] p-6 text-center animate-in fade-in">
-          <UploadCloud className="w-14 h-14 text-[#FF7138] animate-bounce mb-3" />
+        <div className="absolute inset-0 bg-[#101820]/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center border-2 border-dashed border-teal-500 p-6 text-center animate-in fade-in">
+          <UploadCloud className="w-14 h-14 text-teal-400 animate-bounce mb-3" />
           <h4 className="text-xl font-bold font-heading text-[#F4F5F2]">Drop STL CAD File Here</h4>
           <p className="text-sm text-[#F4F5F2]/70 mt-1">
             Browser-side mesh parsing with manifold validation
@@ -398,12 +398,12 @@ export const CadViewer = ({
       {showHud && (
         <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-2 pointer-events-none">
           <div className="bg-[#1C2935]/85 backdrop-blur-md border border-white/10 rounded-xl px-3.5 py-1.5 shadow-lg flex items-center gap-2 pointer-events-auto">
-            <span className="w-2 h-2 rounded-full bg-[#29B5A5] animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping" />
             <span className="text-xs font-mono font-medium text-[#F4F5F2]">
               {uploadedFileName ? uploadedFileName : preset.replace('_', ' ').toUpperCase()}
             </span>
           </div>
-          <Badge variant="success" size="sm" dot>
+          <Badge variant="teal" size="sm" dot>
             100% Watertight Manifold
           </Badge>
           <Badge variant="teal" size="sm">
@@ -417,7 +417,7 @@ export const CadViewer = ({
         <div className="absolute bottom-4 left-4 z-20 bg-[#1C2935]/85 backdrop-blur-md border border-white/10 rounded-xl p-3 shadow-xl pointer-events-auto space-y-1 text-xs font-mono text-[#F4F5F2]">
           <div className="flex items-center gap-4 text-[#F4F5F2]/70">
             <span>Dimensions:</span>
-            <span className="text-[#FF7138] font-bold">
+            <span className="text-teal-400 font-bold">
               {metrics.dimensions.x} × {metrics.dimensions.y} × {metrics.dimensions.z} mm
             </span>
           </div>
@@ -437,7 +437,7 @@ export const CadViewer = ({
               title="Shaded Solid"
               onClick={() => setRenderMode('shaded')}
               className={`p-2 rounded-lg text-xs font-medium transition-colors ${
-                renderMode === 'shaded' ? 'bg-[#FF7138] text-white' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
+                renderMode === 'shaded' ? 'bg-teal-600 text-white' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
               }`}
             >
               <Box size={16} />
@@ -446,7 +446,7 @@ export const CadViewer = ({
               title="Wireframe Mesh"
               onClick={() => setRenderMode('wireframe')}
               className={`p-2 rounded-lg text-xs font-medium transition-colors ${
-                renderMode === 'wireframe' ? 'bg-[#FF7138] text-white' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
+                renderMode === 'wireframe' ? 'bg-teal-600 text-white' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
               }`}
             >
               <Layers size={16} />
@@ -455,7 +455,7 @@ export const CadViewer = ({
               title="X-Ray Transparent"
               onClick={() => setRenderMode('xray')}
               className={`p-2 rounded-lg text-xs font-medium transition-colors ${
-                renderMode === 'xray' ? 'bg-[#FF7138] text-white' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
+                renderMode === 'xray' ? 'bg-teal-600 text-white' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
               }`}
             >
               <Eye size={16} />
@@ -470,7 +470,7 @@ export const CadViewer = ({
                 title={COLOR_PALETTE[key].name}
                 onClick={() => setSelectedColor(key)}
                 className={`w-5 h-5 rounded-full border transition-transform ${
-                  selectedColor === key ? 'scale-125 border-white ring-2 ring-[#FF7138]' : 'border-white/20 hover:scale-110'
+                  selectedColor === key ? 'scale-125 border-white ring-2 ring-teal-400' : 'border-white/20 hover:scale-110'
                 }`}
                 style={{
                   backgroundColor: `#${COLOR_PALETTE[key].color.toString(16).padStart(6, '0')}`,
@@ -485,7 +485,7 @@ export const CadViewer = ({
               title={isAutoRotating ? 'Pause Rotation' : 'Auto Rotate'}
               onClick={() => setIsAutoRotating(!isAutoRotating)}
               className={`p-2 rounded-lg transition-colors ${
-                isAutoRotating ? 'bg-[#29B5A5] text-[#101820]' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
+                isAutoRotating ? 'bg-teal-500 text-[#101820]' : 'text-[#F4F5F2]/60 hover:text-white hover:bg-white/5'
               }`}
             >
               <RotateCcw size={16} />
@@ -508,7 +508,7 @@ export const CadViewer = ({
               <button
                 title="Upload STL File"
                 onClick={() => fileInputRef.current?.click()}
-                className="p-2 rounded-lg text-[#FF7138] hover:bg-[#FF7138]/10 transition-colors"
+                className="p-2 rounded-lg text-teal-400 hover:bg-teal-400/10 transition-colors"
               >
                 <UploadCloud size={16} />
               </button>

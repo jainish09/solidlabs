@@ -28,11 +28,16 @@ import MessagesPage from './pages/common/MessagesPage';
 
 // Customer Pages
 import CustomerDashboardPage from './pages/customer/CustomerDashboardPage';
-import CustomerAssetsPage from './pages/customer/CustomerAssetsPage';
-import CustomerOrdersPage from './pages/customer/CustomerOrdersPage';
+import CustomerMarketplacePage from './pages/customer/CustomerMarketplacePage';
+import CustomerPostRequirementPage from './pages/customer/CustomerPostRequirementPage';
+import CustomerProjectsPage from './pages/customer/CustomerProjectsPage';
 import CustomerQuotesPage from './pages/customer/CustomerQuotesPage';
-import CustomerRequirementsPage from './pages/customer/CustomerRequirementsPage';
+import CustomerOrdersPage from './pages/customer/CustomerOrdersPage';
+import CustomerTrackingPage from './pages/customer/CustomerTrackingPage';
 import CustomerQualityPage from './pages/customer/CustomerQualityPage';
+import CustomerProfileSettingsPage from './pages/customer/CustomerProfileSettingsPage';
+import CustomerAssetsPage from './pages/customer/CustomerAssetsPage';
+import CustomerRequirementsPage from './pages/customer/CustomerRequirementsPage';
 import CustomerProfilePage from './pages/customer/CustomerProfilePage';
 import CustomerSettingsPage from './pages/customer/CustomerSettingsPage';
 
@@ -73,19 +78,24 @@ export const App = () => {
           {/* Customer / Hardware Engineer Workspace (SolidLabs Connect) */}
           <Route path="/customer" element={<DashboardLayout />}>
             <Route index element={<Navigate to="/customer/dashboard" replace />} />
+            <Route path="overview" element={<CustomerDashboardPage />} />
             <Route path="dashboard" element={<CustomerDashboardPage />} />
-            <Route path="messages" element={<MessagesPage />} />
-            <Route path="messages/:conversationId" element={<MessagesPage />} />
-            <Route path="projects" element={<CustomerAssetsPage />} />
-            <Route path="assets" element={<CustomerAssetsPage />} />
-            <Route path="upload-cad" element={<CadAnalyzerPage />} />
-            <Route path="requirements" element={<CustomerRequirementsPage />} />
+            <Route path="marketplace" element={<CustomerMarketplacePage />} />
+            <Route path="post-requirement" element={<CustomerPostRequirementPage />} />
+            <Route path="requirements" element={<CustomerPostRequirementPage />} />
+            <Route path="projects" element={<CustomerProjectsPage />} />
+            <Route path="assets" element={<CustomerProjectsPage />} />
+            <Route path="quotations" element={<CustomerQuotesPage />} />
             <Route path="quotes" element={<CustomerQuotesPage />} />
             <Route path="orders" element={<CustomerOrdersPage />} />
-            <Route path="tracking" element={<CustomerOrdersPage />} />
+            <Route path="tracking" element={<CustomerTrackingPage />} />
+            <Route path="quality" element={<CustomerQualityPage />} />
             <Route path="quality-reports" element={<CustomerQualityPage />} />
-            <Route path="profile" element={<CustomerProfilePage />} />
-            <Route path="settings" element={<CustomerSettingsPage />} />
+            <Route path="messages" element={<MessagesPage />} />
+            <Route path="messages/:conversationId" element={<MessagesPage />} />
+            <Route path="profile" element={<CustomerProfileSettingsPage />} />
+            <Route path="settings" element={<CustomerProfileSettingsPage />} />
+            <Route path="upload-cad" element={<CadAnalyzerPage />} />
           </Route>
 
           {/* Manufacturer Partner Workspace (SolidLabs Connect) */}

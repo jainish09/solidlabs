@@ -1,37 +1,42 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SolidLabs — Premium AI-Powered B2B Automotive Manufacturing Marketplace</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      window.addEventListener('error', function(e) {
-        var root = document.getElementById('root');
-        if (root && (!root.innerHTML || root.innerHTML.trim() === '')) {
-          root.innerHTML = '<div style="margin:20px;padding:24px;background:#fff1f0;border:2px solid #ff4d4f;border-radius:12px;font-family:sans-serif;color:#111;">' +
-            '<h2 style="color:#cf1322;margin:0 0 10px;">JavaScript Runtime Error Caught</h2>' +
-            '<p style="font-family:monospace;white-space:pre-wrap;background:#fff;padding:12px;border:1px solid #ffa39e;border-radius:8px;">' + (e.error ? (e.error.stack || e.error.message) : e.message) + '</p>' +
-            '<p style="font-size:12px;color:#888;">File: ' + (e.filename || 'unknown') + ' Line: ' + (e.lineno || '0') + '</p>' +
-            '</div>';
-        }
-      });
-      window.addEventListener('unhandledrejection', function(e) {
-        var root = document.getElementById('root');
-        if (root && (!root.innerHTML || root.innerHTML.trim() === '')) {
-          root.innerHTML = '<div style="margin:20px;padding:24px;background:#fff1f0;border:2px solid #ff4d4f;border-radius:12px;font-family:sans-serif;color:#111;">' +
-            '<h2 style="color:#cf1322;margin:0 0 10px;">Unhandled Promise Rejection</h2>' +
-            '<p style="font-family:monospace;white-space:pre-wrap;background:#fff;padding:12px;border:1px solid #ffa39e;border-radius:8px;">' + (e.reason ? (e.reason.stack || e.reason.message || String(e.reason)) : String(e)) + '</p>' +
-            '</div>';
-        }
-      });
-    </script>
-  </head>
-  <body class="bg-[#F5F5F3] text-[#111111] font-body antialiased min-h-screen">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SolidLabs — Premium AI-Powered B2B Automotive Manufacturing Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    window.addEventListener('error', function (e) {
+      var root = document.getElementById('root');
+      if (root && (!root.innerHTML || root.innerHTML.trim() === '')) {
+        root.innerHTML = '<div style="margin:20px;padding:24px;background:#fff1f0;border:2px solid #ff4d4f;border-radius:12px;font-family:sans-serif;color:#111;">' +
+          '<h2 style="color:#cf1322;margin:0 0 10px;">JavaScript Runtime Error Caught</h2>' +
+          '<p style="font-family:monospace;white-space:pre-wrap;background:#fff;padding:12px;border:1px solid #ffa39e;border-radius:8px;">' + (e.error ? (e.error.stack || e.error.message) : e.message) + '</p>' +
+          '<p style="font-size:12px;color:#888;">File: ' + (e.filename || 'unknown') + ' Line: ' + (e.lineno || '0') + '</p>' +
+          '</div>';
+      }
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      var root = document.getElementById('root');
+      if (root && (!root.innerHTML || root.innerHTML.trim() === '')) {
+        root.innerHTML = '<div style="margin:20px;padding:24px;background:#fff1f0;border:2px solid #ff4d4f;border-radius:12px;font-family:sans-serif;color:#111;">' +
+          '<h2 style="color:#cf1322;margin:0 0 10px;">Unhandled Promise Rejection</h2>' +
+          '<p style="font-family:monospace;white-space:pre-wrap;background:#fff;padding:12px;border:1px solid #ffa39e;border-radius:8px;">' + (e.reason ? (e.reason.stack || e.reason.message || String(e.reason)) : String(e)) + '</p>' +
+          '</div>';
+      }
+    });
+  </script>
+</head>
+
+<body class="bg-[#F5F5F3] text-[#111111] font-body antialiased min-h-screen">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

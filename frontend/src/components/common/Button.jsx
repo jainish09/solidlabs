@@ -16,13 +16,15 @@ export const Button = ({
   const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
   const variants = {
-    primary: 'bg-[#FF7138] text-white hover:bg-[#ff824f] active:bg-[#e65c25] focus:ring-[#FF7138] shadow-sm shadow-[#FF7138]/25',
-    secondary: 'bg-[#111111] text-white hover:bg-[#222222] active:bg-black focus:ring-[#111111]',
-    teal: 'bg-[#20B8A5] text-white font-semibold hover:bg-[#25caa5] active:bg-[#1ca493] focus:ring-[#20B8A5] shadow-sm shadow-[#20B8A5]/25',
-    outline: 'border border-gray-300 bg-white text-[#111111] hover:bg-gray-50 active:bg-gray-100 focus:ring-gray-300',
-    outlineOrange: 'border border-[#FF7138] text-[#FF7138] hover:bg-[#FF7138]/10 active:bg-[#FF7138]/20 focus:ring-[#FF7138]',
-    ghost: 'text-[#111111] hover:bg-gray-100 active:bg-gray-200 focus:ring-gray-200',
-    white: 'bg-white text-[#111111] hover:bg-gray-50 active:bg-gray-100 shadow-sm border border-gray-200 focus:ring-white',
+    primary: 'bg-[#0D9488] text-white font-medium hover:bg-[#0F766E] active:bg-[#115E59] focus:ring-[#0D9488] shadow-sm shadow-[#0D9488]/20',
+    secondary: 'bg-[#0F172A] text-white font-medium hover:bg-[#1E293B] active:bg-black focus:ring-[#0F172A]',
+    teal: 'bg-[#0D9488] text-white font-semibold hover:bg-[#0F766E] active:bg-[#115E59] focus:ring-[#0D9488] shadow-sm shadow-[#0D9488]/20',
+    outline: 'border border-teal-200 bg-white text-[#0F172A] hover:bg-teal-50/60 hover:border-teal-400 focus:ring-teal-200',
+    outlineOrange: 'border border-[#0D9488] text-[#0D9488] bg-white hover:bg-[#F0FDFA] focus:ring-[#0D9488]',
+    outlineTeal: 'border border-[#0D9488] text-[#0D9488] bg-white hover:bg-[#F0FDFA] focus:ring-[#0D9488]',
+    ghost: 'text-[#0F172A] hover:bg-teal-50 hover:text-[#0D9488] active:bg-teal-100 focus:ring-teal-200',
+    white: 'bg-white text-[#0F172A] hover:bg-teal-50/60 active:bg-teal-100 shadow-sm border border-teal-100 focus:ring-white',
+    outlineWhite: 'border-2 border-white text-white bg-white/10 hover:bg-white hover:text-teal-950 active:bg-white/90 backdrop-blur-sm shadow-sm focus:ring-white transition-all duration-200',
   };
 
   const sizes = {

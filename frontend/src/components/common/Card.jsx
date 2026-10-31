@@ -6,13 +6,13 @@ export const Card = ({ children, className = '', hover = false, dark = false, on
       onClick={onClick}
       className={`rounded-2xl transition-all duration-200 ${
         dark
-          ? 'bg-[#1B1B1B] text-white border border-white/10 shadow-lg'
-          : 'bg-white text-[#111111] border border-gray-200/80 shadow-sm'
+          ? 'bg-[#0F172A] text-white border border-teal-900/50 shadow-lg'
+          : 'bg-white text-[#0F172A] border border-slate-200/90 shadow-xs'
       } ${
         hover
           ? dark
-            ? 'hover:border-[#FF7138]/50 hover:shadow-xl hover:shadow-[#FF7138]/5 cursor-pointer'
-            : 'hover:border-[#FF7138]/40 hover:shadow-md cursor-pointer'
+            ? 'hover:border-teal-500/50 hover:shadow-xl hover:shadow-teal-950/20 cursor-pointer'
+            : 'hover:border-teal-500/60 hover:shadow-md hover:shadow-teal-900/5 cursor-pointer'
           : ''
       } p-5 ${className}`}
       {...props}

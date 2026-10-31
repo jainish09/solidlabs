@@ -71,8 +71,8 @@ export const ConversationList = ({
             onClick={() => setFilterUnreadOnly(false)}
             className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
               !filterUnreadOnly
-                ? 'bg-[#111111] text-white font-semibold'
-                : 'bg-white border border-gray-200 text-[#858585] hover:bg-gray-100'
+                ? 'bg-teal-700 text-white font-semibold'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-teal-50'
             }`}
           >
             All Threads
@@ -81,27 +81,27 @@ export const ConversationList = ({
             onClick={() => setFilterUnreadOnly(true)}
             className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors cursor-pointer flex items-center gap-1.5 ${
               filterUnreadOnly
-                ? 'bg-[#FF7138] text-white font-semibold'
-                : 'bg-white border border-gray-200 text-[#858585] hover:bg-gray-100'
+                ? 'bg-teal-600 text-white font-semibold'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-teal-50'
             }`}
           >
             <span>Unread</span>
             {conversations.some((c) => (role === 'customer' ? c.unreadCountCustomer : c.unreadCountManufacturer) > 0) && (
-              <span className="w-2 h-2 rounded-full bg-[#FF7138] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
             )}
           </button>
         </div>
       </div>
 
       {/* Conversations Scrollable List */}
-      <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
+      <div className="flex-1 overflow-y-auto divide-y divide-teal-50">
         {filteredConversations.length === 0 ? (
           <div className="p-8 text-center space-y-3">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#F5F5F3] flex items-center justify-center text-[#858585]">
+            <div className="w-12 h-12 mx-auto rounded-full bg-teal-50 flex items-center justify-center text-teal-700">
               <MessageSquare size={20} />
             </div>
-            <p className="text-xs font-bold font-heading text-[#111111]">No conversations found</p>
-            <p className="text-[11px] text-[#858585] font-body">
+            <p className="text-xs font-bold font-heading text-slate-900">No conversations found</p>
+            <p className="text-[11px] text-slate-500 font-body">
               {searchQuery ? 'Try clearing your search query.' : 'Browse products to initiate conversations with certified suppliers.'}
             </p>
             {(searchQuery || filterUnreadOnly) && (
@@ -110,7 +110,7 @@ export const ConversationList = ({
                   setSearchQuery('');
                   setFilterUnreadOnly(false);
                 }}
-                className="text-xs font-mono text-[#FF7138] hover:underline cursor-pointer"
+                className="text-xs font-mono text-teal-700 hover:underline cursor-pointer font-bold"
               >
                 Reset filters
               </button>
@@ -130,46 +130,46 @@ export const ConversationList = ({
                 onClick={() => onSelectConversation(conv.id)}
                 className={`p-3.5 flex items-start gap-3 cursor-pointer transition-colors relative ${
                   isSelected
-                    ? 'bg-[#F5F5F3] border-l-4 border-l-[#FF7138]'
-                    : 'hover:bg-gray-50/80 bg-white'
+                    ? 'bg-teal-50/80 border-l-4 border-l-teal-600'
+                    : 'hover:bg-teal-50/40 bg-white'
                 }`}
               >
                 {/* Avatar with Online Status */}
                 <div className="relative shrink-0 mt-0.5">
-                  <div className="w-10 h-10 rounded-xl bg-[#111111] text-white flex items-center justify-center font-heading font-black text-xs shadow-xs border border-gray-700">
+                  <div className="w-10 h-10 rounded-xl bg-teal-800 text-white flex items-center justify-center font-heading font-black text-xs shadow-xs border border-teal-700">
                     {counterpartAvatar}
                   </div>
                   {isOnline && (
-                    <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white" title="Online now" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-teal-500 border-2 border-white" title="Online now" />
                   )}
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center justify-between gap-1">
-                    <h3 className={`text-xs font-bold font-heading truncate ${unreadCount > 0 ? 'text-[#111111] font-black' : 'text-[#111111]'}`}>
+                    <h3 className={`text-xs font-bold font-heading truncate ${unreadCount > 0 ? 'text-slate-900 font-black' : 'text-slate-900'}`}>
                       {counterpartName}
                     </h3>
-                    <span className="text-[10px] font-mono text-[#858585] shrink-0">
+                    <span className="text-[10px] font-mono text-slate-500 shrink-0">
                       {conv.lastMessageTimestamp}
                     </span>
                   </div>
 
                   {/* Product Tag */}
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#FF7138] truncate">
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-teal-700 font-semibold truncate">
                     <Box size={10} className="shrink-0" />
                     <span className="truncate">{conv.productName}</span>
                   </div>
 
                   {/* Last message preview */}
-                  <p className={`text-xs font-body line-clamp-1 leading-snug ${unreadCount > 0 ? 'text-[#111111] font-semibold' : 'text-[#858585]'}`}>
+                  <p className={`text-xs font-body line-clamp-1 leading-snug ${unreadCount > 0 ? 'text-slate-900 font-semibold' : 'text-slate-500'}`}>
                     {conv.lastMessageText || 'No messages yet'}
                   </p>
                 </div>
 
                 {/* Unread Badge */}
                 {unreadCount > 0 && (
-                  <span className="shrink-0 self-center w-5 h-5 rounded-full bg-[#FF7138] text-white text-[10px] font-bold font-mono flex items-center justify-center shadow-xs">
+                  <span className="shrink-0 self-center w-5 h-5 rounded-full bg-teal-600 text-white text-[10px] font-bold font-mono flex items-center justify-center shadow-xs">
                     {unreadCount}
                   </span>
                 )}

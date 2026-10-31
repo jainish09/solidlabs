@@ -50,15 +50,15 @@ export const ActiveChat = ({
 
   if (!conversation) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#F5F5F3] text-center space-y-4">
-        <div className="w-16 h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-[#FF7138] shadow-sm">
+      <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#F8FAFA] text-center space-y-4">
+        <div className="w-16 h-16 rounded-2xl bg-white border border-teal-100 flex items-center justify-center text-teal-700 shadow-sm">
           <Box size={28} />
         </div>
         <div className="max-w-sm space-y-1">
-          <h3 className="text-base font-bold font-heading text-[#111111]">
+          <h3 className="text-base font-bold font-heading text-slate-900">
             Select a Conversation
           </h3>
-          <p className="text-xs text-[#858585] font-body">
+          <p className="text-xs text-slate-500 font-body">
             Choose a thread from the list or start a direct conversation from any product in the marketplace.
           </p>
         </div>
@@ -66,6 +66,7 @@ export const ActiveChat = ({
           variant="primary"
           size="sm"
           onClick={() => navigate('/marketplace')}
+          className="bg-teal-600 hover:bg-teal-700 text-white"
         >
           Explore Marketplace
         </Button>
@@ -84,15 +85,15 @@ export const ActiveChat = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F5F5F3] overflow-hidden">
+    <div className="flex-1 flex flex-col h-full bg-[#F8FAFA] overflow-hidden">
       {/* 1. Chat Header */}
-      <div className="p-4 bg-white border-b border-gray-200 flex items-center justify-between shadow-xs z-10">
+      <div className="p-4 bg-white border-b border-teal-100 flex items-center justify-between shadow-2xs z-10">
         <div className="flex items-center gap-3">
           {/* Mobile Back Button */}
           {onBackToList && (
             <button
               onClick={onBackToList}
-              className="md:hidden p-1.5 rounded-lg text-gray-500 hover:text-black hover:bg-gray-100 transition-colors"
+              className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-teal-900 hover:bg-teal-50 transition-colors"
               title="Back to list"
             >
               <ChevronLeft size={20} />
@@ -101,18 +102,18 @@ export const ActiveChat = ({
 
           {/* Avatar */}
           <div className="relative">
-            <div className="w-10 h-10 rounded-xl bg-[#111111] text-white flex items-center justify-center font-heading font-black text-xs shadow-xs border border-gray-800">
+            <div className="w-10 h-10 rounded-xl bg-teal-800 text-white flex items-center justify-center font-heading font-black text-xs shadow-xs border border-teal-700">
               {counterpartAvatar}
             </div>
             {isOnline && (
-              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white" />
+              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-teal-500 border-2 border-white" />
             )}
           </div>
 
           {/* Supplier / Buyer Identity Info */}
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold font-heading text-[#111111]">
+              <h3 className="text-sm font-bold font-heading text-slate-900">
                 {counterpartName}
               </h3>
               <Badge variant="teal" size="xs">
@@ -120,20 +121,20 @@ export const ActiveChat = ({
               </Badge>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] font-mono text-[#858585]">
+            <div className="flex items-center gap-2 text-[11px] font-mono text-slate-500">
               <span className="flex items-center gap-1">
-                <MapPin size={11} className="text-[#FF7138]" />
+                <MapPin size={11} className="text-teal-600" />
                 {counterpartLocation}
               </span>
               <span>•</span>
-              <span className="text-emerald-600 font-semibold">
+              <span className="text-teal-700 font-semibold">
                 {isOnline ? 'Online now' : 'Active today'}
               </span>
               {role === 'customer' && conversation.manufacturerRating && (
                 <>
                   <span>•</span>
-                  <span className="flex items-center gap-0.5 text-[#111111] font-bold">
-                    <Star size={10} className="fill-[#FF7138] text-[#FF7138]" />
+                  <span className="flex items-center gap-0.5 text-slate-900 font-bold">
+                    <Star size={10} className="fill-amber-500 text-amber-500" />
                     {conversation.manufacturerRating}
                   </span>
                 </>
@@ -167,28 +168,28 @@ export const ActiveChat = ({
       </div>
 
       {/* 2. Compact Product Context Card (At the top of conversation) */}
-      <div className="p-3 bg-white border-b border-gray-200/80 shadow-xs">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 p-2.5 bg-[#F5F5F3] rounded-xl border border-gray-200">
+      <div className="p-3 bg-white border-b border-teal-100 shadow-2xs">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3 p-2.5 bg-teal-50/50 rounded-xl border border-teal-100">
           <div className="flex items-center gap-3 min-w-0">
             <img
               src={conversation.productImage}
               alt={conversation.productName}
-              className="w-12 h-12 rounded-lg object-cover border border-gray-200 shrink-0"
+              className="w-12 h-12 rounded-lg object-cover border border-teal-200 shrink-0"
             />
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase text-[#FF7138] font-bold">
+                <span className="text-[10px] font-mono uppercase text-teal-700 font-bold">
                   {conversation.productCategory}
                 </span>
-                <span className="text-[10px] text-[#858585]">• Product ID: {conversation.productId}</span>
+                <span className="text-[10px] text-slate-500">• Product ID: {conversation.productId}</span>
               </div>
-              <h4 className="text-xs font-bold font-heading text-[#111111] truncate">
+              <h4 className="text-xs font-bold font-heading text-slate-900 truncate">
                 {conversation.productName}
               </h4>
-              <div className="flex items-center gap-3 text-[11px] font-mono text-[#858585] mt-0.5">
-                <span>Wholesale: <strong className="text-[#111111]">{conversation.productPrice}</strong></span>
+              <div className="flex items-center gap-3 text-[11px] font-mono text-slate-500 mt-0.5">
+                <span>Wholesale: <strong className="text-slate-900">{conversation.productPrice}</strong></span>
                 <span>•</span>
-                <span>MOQ: <strong className="text-[#111111]">{conversation.productMoq} units</strong></span>
+                <span>MOQ: <strong className="text-slate-900">{conversation.productMoq} units</strong></span>
               </div>
             </div>
           </div>
@@ -199,6 +200,7 @@ export const ActiveChat = ({
               size="xs"
               onClick={() => navigate(`/products/${conversation.productId}`)}
               leftIcon={<Box size={12} />}
+              className="border-teal-200 text-teal-800 hover:bg-teal-50"
             >
               View Product
             </Button>
@@ -207,7 +209,7 @@ export const ActiveChat = ({
               size="xs"
               onClick={() => navigate(`/customize/${conversation.productId}`)}
               leftIcon={<Sliders size={12} />}
-              className="hidden sm:inline-flex"
+              className="hidden sm:inline-flex border-teal-200 text-teal-900"
             >
               Studio
             </Button>
@@ -219,7 +221,7 @@ export const ActiveChat = ({
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
         {/* Date Divider */}
         <div className="flex items-center justify-center my-2">
-          <span className="px-3 py-1 rounded-full bg-white border border-gray-200 text-[10px] font-mono uppercase text-[#858585] shadow-xs">
+          <span className="px-3 py-1 rounded-full bg-white border border-teal-100 text-[10px] font-mono uppercase text-slate-500 shadow-2xs">
             Direct Discussion Thread • All prices in INR (₹)
           </span>
         </div>
@@ -235,7 +237,7 @@ export const ActiveChat = ({
               key={msg.id}
               className={`flex flex-col ${isSenderActiveUser ? 'items-end' : 'items-start'} space-y-1`}
             >
-              <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#858585] px-1">
+              <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-500 px-1">
                 <span className="font-bold">{msg.senderName}</span>
                 <span>•</span>
                 <span>{msg.timestamp}</span>
@@ -245,8 +247,8 @@ export const ActiveChat = ({
               <div
                 className={`max-w-md sm:max-w-lg rounded-2xl p-4 shadow-xs text-xs font-body leading-relaxed ${
                   isSenderActiveUser
-                    ? 'bg-[#FF7138] text-white rounded-tr-none'
-                    : 'bg-white border border-gray-200 text-[#111111] rounded-tl-none'
+                    ? 'bg-teal-600 text-white rounded-tr-none'
+                    : 'bg-white border border-teal-100 text-slate-900 rounded-tl-none'
                 }`}
               >
                 {/* Standard Message Text */}
@@ -259,8 +261,8 @@ export const ActiveChat = ({
                   <div
                     className={`mt-3 p-3.5 rounded-xl border text-xs font-mono space-y-2 ${
                       isSenderActiveUser
-                        ? 'bg-black/20 border-white/20 text-white'
-                        : 'bg-[#F5F5F3] border-gray-200 text-[#111111]'
+                        ? 'bg-teal-800/60 border-white/20 text-white'
+                        : 'bg-teal-50/60 border-teal-200 text-slate-900'
                     }`}
                   >
                     <div className="flex items-center justify-between pb-1.5 border-b border-current/20">
@@ -377,14 +379,14 @@ export const ActiveChat = ({
                         key={att.id}
                         className={`flex items-center justify-between gap-3 p-2 rounded-xl text-xs font-mono ${
                           isSenderActiveUser
-                            ? 'bg-black/15 text-white'
-                            : 'bg-[#F5F5F3] text-[#111111] border border-gray-200'
+                            ? 'bg-teal-900/40 text-white'
+                            : 'bg-teal-50/60 text-slate-900 border border-teal-100'
                         }`}
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          {att.type === 'cad' && <Box size={14} className="text-[#FF7138] shrink-0" />}
+                          {att.type === 'cad' && <Box size={14} className="text-teal-400 shrink-0" />}
                           {att.type === 'pdf' && <FileText size={14} className="text-red-400 shrink-0" />}
-                          {att.type === 'image' && <Sparkles size={14} className="text-[#20B8A5] shrink-0" />}
+                          {att.type === 'image' && <Sparkles size={14} className="text-teal-500 shrink-0" />}
                           <span className="truncate max-w-[200px]">{att.name}</span>
                           <span className="opacity-70 text-[10px]">({att.sizeFormatted})</span>
                         </div>
@@ -404,10 +406,10 @@ export const ActiveChat = ({
               </div>
 
               {/* Delivery and Read Status Indicators */}
-              <div className="flex items-center gap-1 text-[10px] font-mono text-[#858585] px-1">
+              <div className="flex items-center gap-1 text-[10px] font-mono text-slate-400 px-1">
                 {isSenderActiveUser && (
                   <span className="flex items-center gap-0.5">
-                    <CheckCheck size={12} className="text-[#20B8A5]" />
+                    <CheckCheck size={12} className="text-teal-600" />
                     <span>Delivered</span>
                   </span>
                 )}
@@ -418,14 +420,14 @@ export const ActiveChat = ({
 
         {/* Typing indicator */}
         {typingInConversation === conversation.id && (
-          <div className="flex items-center gap-2 p-3 bg-white rounded-2xl rounded-tl-none border border-gray-200 max-w-xs shadow-xs">
-            <span className="text-[11px] font-mono text-[#858585]">
+          <div className="flex items-center gap-2 p-3 bg-white rounded-2xl rounded-tl-none border border-teal-100 max-w-xs shadow-2xs">
+            <span className="text-[11px] font-mono text-slate-500">
               {counterpartName} is typing
             </span>
             <span className="flex gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF7138] animate-bounce" style={{ animationDelay: '0ms' }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF7138] animate-bounce" style={{ animationDelay: '150ms' }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF7138] animate-bounce" style={{ animationDelay: '300ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-600 animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-600 animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-600 animate-bounce" style={{ animationDelay: '300ms' }} />
             </span>
           </div>
         )}

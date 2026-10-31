@@ -22,13 +22,18 @@ import {
   ClipboardList,
   Factory,
   MessageSquare,
+  PlusCircle,
+  Eye,
 } from 'lucide-react';
 import Badge from '../common/Badge';
 
 export const Sidebar = ({ onClose, isDrawer = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, role, setRole, showToast, totalUnreadMessages } = useAuth();
+  const { user, role, setRole, showToast, totalUnreadMessages, quotations = [], orders = [] } = useAuth();
+
+  const pendingQuotesCount = quotations.filter((q) => q.status === 'pending').length;
+  const activeOrdersCount = orders.filter((o) => o.currentStageIndex < 6).length;
 
   // Auto-sync role with the current dashboard route if user is inside /customer or /manufacturer
   useEffect(() => {
@@ -49,26 +54,33 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     }
   };
 
+  // Exactly 10 Main Navigation Items for Customer as specified in Section 2
   const customerLinks = [
     { name: 'Overview', path: '/customer/dashboard', icon: <LayoutDashboard size={16} /> },
+    { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag size={16} /> },
+    { name: 'Post Requirement', path: '/customer/post-requirement', icon: <PlusCircle size={16} /> },
+    { name: 'My Projects', path: '/customer/projects', icon: <FolderKanban size={16} /> },
+    {
+      name: 'Quotations',
+      path: '/customer/quotations',
+      icon: <Receipt size={16} />,
+      badge: pendingQuotesCount > 0 ? pendingQuotesCount : null,
+    },
+    {
+      name: 'My Orders',
+      path: '/customer/orders',
+      icon: <Truck size={16} />,
+      badge: activeOrdersCount > 0 ? activeOrdersCount : null,
+    },
+    { name: 'Production Tracking', path: '/customer/tracking', icon: <Layers size={16} /> },
+    { name: 'Quality Reports', path: '/customer/quality', icon: <ShieldCheck size={16} /> },
     {
       name: 'Messages',
       path: '/customer/messages',
       icon: <MessageSquare size={16} />,
       badge: totalUnreadMessages > 0 ? totalUnreadMessages : null,
     },
-    { name: 'Explore Products', path: '/marketplace', icon: <ShoppingBag size={16} /> },
-    { name: 'My Projects', path: '/customer/projects', icon: <FolderKanban size={16} /> },
-    { name: 'AI Customization Studio', path: '/customize/prod_001', icon: <Sliders size={16} /> },
-    { name: 'Upload CAD', path: '/customer/upload-cad', icon: <UploadCloud size={16} /> },
-    { name: 'DFM Analysis', path: '/cad-analyzer', icon: <FileCheck2 size={16} /> },
-    { name: 'My Requirements', path: '/customer/requirements', icon: <FileText size={16} /> },
-    { name: 'Quotations', path: '/customer/quotes', icon: <Receipt size={16} /> },
-    { name: 'My Orders', path: '/customer/orders', icon: <Truck size={16} /> },
-    { name: 'Production Tracking', path: '/customer/tracking', icon: <Layers size={16} /> },
-    { name: 'Quality Reports', path: '/customer/quality-reports', icon: <ShieldCheck size={16} /> },
-    { name: 'Profile', path: '/customer/profile', icon: <User size={16} /> },
-    { name: 'Settings', path: '/customer/settings', icon: <Settings size={16} /> },
+    { name: 'Profile & Settings', path: '/customer/settings', icon: <Settings size={16} /> },
   ];
 
   const manufacturerLinks = [
@@ -81,7 +93,7 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     },
     { name: 'Incoming Requests', path: '/manufacturer/requests', icon: <ClipboardList size={16} /> },
     { name: 'Product Catalogue', path: '/marketplace', icon: <ShoppingBag size={16} /> },
-    { name: 'Design Review', path: '/cad-analyzer', icon: <FileCheck2 size={16} /> },
+    { name: 'Eye Vision', path: '/cad-analyzer', icon: <Eye size={16} /> },
     { name: 'Quotations', path: '/manufacturer/quotes', icon: <Receipt size={16} /> },
     { name: 'Active Orders', path: '/manufacturer/orders', icon: <Truck size={16} /> },
     { name: 'Production Management', path: '/manufacturer/production', icon: <Layers size={16} /> },
@@ -116,23 +128,23 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       }`}
     >
       {/* Active Persona Banner */}
-      <div className="p-4 border-b border-gray-100 bg-[#F5F5F3]/50">
-        <div className="space-y-1.5">
+      <div className="p-4 border-b border-teal-100 bg-teal-50/40">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase font-mono tracking-wider text-[#858585]">Workspace Persona</span>
-            <Badge variant={role === 'customer' ? 'orange' : 'teal'} size="xs">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-teal-800 font-bold">Workspace Persona</span>
+            <Badge variant="teal" size="xs">
               {role === 'customer' ? 'Customer' : 'Manufacturer'}
             </Badge>
           </div>
           <div>
-            <p className="text-xs font-bold font-heading text-[#111111] truncate">{user.name}</p>
-            <p className="text-[10px] text-[#858585] font-mono truncate">{user.organization}</p>
+            <p className="text-xs font-bold font-heading text-[#0F172A] truncate">{user.name}</p>
+            <p className="text-[10px] text-slate-500 font-mono truncate">{user.organization}</p>
           </div>
 
           <button
             type="button"
             onClick={handleToggleRole}
-            className="w-full text-center text-[10px] font-mono py-1 rounded-lg bg-white hover:bg-gray-100 text-[#111111] border border-gray-200 transition-colors cursor-pointer mt-1"
+            className="w-full text-center text-[10px] font-mono py-1.5 rounded-lg bg-white hover:bg-teal-50 text-teal-900 border border-teal-200 hover:border-teal-400 transition-colors cursor-pointer mt-1 font-semibold shadow-2xs"
           >
             Switch to {role === 'customer' ? 'Manufacturer' : 'Customer'} View
           </button>
@@ -140,34 +152,63 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       </div>
 
       {/* Navigation List */}
-      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
-        <p className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[#858585]">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        <p className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-teal-800 font-bold">
           {role === 'customer' ? 'Customer Navigation' : 'Manufacturer Hub'}
         </p>
         {links.map((item) => {
-          const active = location.pathname === item.path;
+          const isItemActive = () => {
+            if (location.pathname === item.path) return true;
+            if (item.path === '/customer/dashboard') {
+              return location.pathname === '/customer/overview' || location.pathname === '/customer';
+            }
+            if (item.path === '/customer/quotations') {
+              return location.pathname === '/customer/quotes';
+            }
+            if (item.path === '/customer/post-requirement') {
+              return location.pathname === '/customer/requirements';
+            }
+            if (item.path === '/customer/projects') {
+              return location.pathname === '/customer/assets';
+            }
+            if (item.path === '/customer/quality') {
+              return location.pathname === '/customer/quality-reports';
+            }
+            if (item.path === '/customer/settings') {
+              return location.pathname === '/customer/profile';
+            }
+            if (item.path === '/customer/messages') {
+              return location.pathname.startsWith('/customer/messages');
+            }
+            if (item.path === '/customer/marketplace') {
+              return location.pathname === '/marketplace' || location.pathname.startsWith('/products/');
+            }
+            return false;
+          };
+
+          const active = isItemActive();
           return (
             <a
               key={item.path}
               href={item.path}
               onClick={(e) => handleItemNavigation(e, item.path)}
-              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
+              className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                 active
-                  ? 'bg-[#111111] text-white font-semibold shadow-xs'
-                  : 'text-[#858585] hover:bg-gray-100 hover:text-[#111111]'
+                  ? 'bg-teal-50 text-teal-900 font-bold border-l-4 border-teal-600 shadow-2xs'
+                  : 'text-slate-600 hover:bg-teal-50/60 hover:text-teal-900'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <span className={active ? 'text-[#FF7138]' : 'text-gray-400'}>{item.icon}</span>
+                <span className={active ? 'text-teal-700' : 'text-slate-400'}>{item.icon}</span>
                 <span className="truncate">{item.name}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 {item.badge && (
-                  <span className="px-1.5 py-0.5 rounded-full bg-[#FF7138] text-white text-[9px] font-bold font-mono">
+                  <span className="px-2 py-0.5 rounded-full bg-teal-600 text-white text-[9px] font-bold font-mono shadow-2xs">
                     {item.badge}
                   </span>
                 )}
-                {active && <ChevronRight size={13} className="text-[#FF7138]" />}
+                {active && <ChevronRight size={14} className="text-teal-600" />}
               </div>
             </a>
           );
@@ -175,10 +216,13 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       </nav>
 
       {/* Footer System Status */}
-      <div className="p-3 border-t border-gray-100 bg-[#F5F5F3]/50 text-[10px] font-mono text-[#858585]">
+      <div className="p-3 border-t border-teal-100 bg-teal-50/30 text-[10px] font-mono text-slate-500">
         <div className="flex items-center justify-between">
           <span>Shared State:</span>
-          <span className="text-[#20B8A5] font-semibold">Synchronized</span>
+          <span className="text-teal-700 font-semibold flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse" />
+            Synchronized
+          </span>
         </div>
       </div>
     </aside>

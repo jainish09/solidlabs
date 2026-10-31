@@ -259,27 +259,29 @@ export const CustomizationStudioPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="orange" dot>AI Customization Studio</Badge>
-            <Badge variant="teal">Interactive B2B Configurator</Badge>
+            <Badge variant="teal" dot>AI Customization Studio</Badge>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white text-teal-800 border border-teal-200">
+              Interactive B2B Configurator
+            </span>
           </div>
-          <h1 className="text-3xl font-extrabold font-heading text-[#111111] tracking-tight">
+          <h1 className="text-3xl font-extrabold font-heading text-slate-900 tracking-tight">
             Automotive Component Customization Studio
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-[#858585] font-body">
+          <p className="mt-1 text-xs sm:text-sm text-slate-600 font-body">
             Tailor mechanical parameters, materials, and tolerances. Use AI suggestions to optimize performance for your vehicle application.
           </p>
         </div>
 
         {/* Change Target Component dropdown */}
         <div className="flex items-center gap-2">
-          <label className="text-xs font-mono text-[#858585] uppercase shrink-0">Product:</label>
+          <label className="text-xs font-mono text-slate-500 uppercase shrink-0">Product:</label>
           <select
             value={selectedProduct.id}
             onChange={(e) => {
               const p = AUTOMOTIVE_PRODUCTS.find((item) => item.id === e.target.value);
               if (p) setSelectedProduct(p);
             }}
-            className="bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-[#111111] font-medium focus:outline-none focus:ring-2 focus:ring-[#FF7138] shadow-sm max-w-xs truncate"
+            className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm max-w-xs truncate"
           >
             {AUTOMOTIVE_PRODUCTS.map((prod) => (
               <option key={prod.id} value={prod.id}>
@@ -325,12 +327,12 @@ export const CustomizationStudioPage = () => {
               )}
 
               {/* View Switcher Chips */}
-              <div className="absolute top-3 right-3 flex items-center gap-1 bg-[#111111]/80 backdrop-blur-xs p-1 rounded-lg border border-white/10 z-10">
+              <div className="absolute top-3 right-3 flex items-center gap-1 bg-slate-900/80 backdrop-blur-xs p-1 rounded-lg border border-white/10 z-10">
                 <button
                   type="button"
                   onClick={() => setViewMode('image')}
                   className={`px-2.5 py-1 rounded text-xs font-mono transition-colors ${
-                    viewMode === 'image' ? 'bg-[#FF7138] text-white font-bold' : 'text-white/60 hover:text-white'
+                    viewMode === 'image' ? 'bg-teal-600 text-white font-bold' : 'text-white/60 hover:text-white'
                   }`}
                 >
                   Photo View
@@ -339,59 +341,59 @@ export const CustomizationStudioPage = () => {
                   type="button"
                   onClick={() => setViewMode('3d')}
                   className={`px-2.5 py-1 rounded text-xs font-mono transition-colors ${
-                    viewMode === '3d' ? 'bg-[#20B8A5] text-white font-bold' : 'text-white/60 hover:text-white'
+                    viewMode === '3d' ? 'bg-teal-700 text-white font-bold' : 'text-white/60 hover:text-white'
                   }`}
                 >
                   3D CAD
                 </button>
               </div>
 
-              <div className="absolute bottom-3 left-3 bg-[#111111]/85 backdrop-blur-xs text-white text-[11px] font-mono px-2.5 py-1 rounded-md">
+              <div className="absolute bottom-3 left-3 bg-slate-900/85 backdrop-blur-xs text-white text-[11px] font-mono px-2.5 py-1 rounded-md">
                 {selectedProduct.category}
               </div>
             </div>
 
             {/* Product Meta Header */}
             <div className="p-5 space-y-3">
-              <h2 className="text-lg font-bold font-heading text-[#111111]">
+              <h2 className="text-lg font-bold font-heading text-slate-900">
                 {selectedProduct.name}
               </h2>
-              <p className="text-xs text-[#858585] font-body leading-relaxed">
+              <p className="text-xs text-slate-600 font-body leading-relaxed">
                 {selectedProduct.description}
               </p>
 
-              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-mono">
-                <span className="text-[#858585]">Base Wholesaler Price:</span>
-                <span className="font-bold text-[#111111] text-sm">{selectedProduct.priceINR}</span>
+              <div className="pt-3 border-t border-teal-50 flex items-center justify-between text-xs font-mono">
+                <span className="text-slate-500">Base Wholesaler Price:</span>
+                <span className="font-bold text-slate-900 text-sm">{selectedProduct.priceINR}</span>
               </div>
             </div>
           </Card>
 
           {/* Current Configuration Summary Box */}
-          <Card>
+          <Card className="bg-white border border-teal-100">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm">Configured Specification Snapshot</CardTitle>
+                <CardTitle className="text-sm text-slate-900">Configured Specification Snapshot</CardTitle>
                 <Badge variant="teal" size="xs">Live State</Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2 text-xs font-mono text-[#111111]">
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#858585]">Material:</span>
+              <div className="space-y-2 text-xs font-mono text-slate-900">
+                <div className="flex justify-between py-1.5 border-b border-teal-50">
+                  <span className="text-slate-500">Material:</span>
                   <span className="font-semibold text-right max-w-[60%] truncate">{config.material}</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#858585]">Order Volume:</span>
-                  <span className="font-semibold text-[#FF7138]">{config.quantity} units</span>
+                <div className="flex justify-between py-1.5 border-b border-teal-50">
+                  <span className="text-slate-500">Order Volume:</span>
+                  <span className="font-semibold text-teal-700">{config.quantity} units</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#858585]">Finish & Color:</span>
+                <div className="flex justify-between py-1.5 border-b border-teal-50">
+                  <span className="text-slate-500">Finish & Color:</span>
                   <span className="font-semibold text-right">{config.colorFinish}</span>
                 </div>
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-[#858585]">Performance Class:</span>
-                  <span className="font-semibold text-[#20B8A5] text-right">{config.performanceTier}</span>
+                <div className="flex justify-between py-1.5 border-b border-teal-50">
+                  <span className="text-slate-500">Performance Class:</span>
+                  <span className="font-semibold text-teal-800 text-right">{config.performanceTier}</span>
                 </div>
               </div>
 
@@ -413,16 +415,16 @@ export const CustomizationStudioPage = () => {
         {/* RIGHT SECTION (7 Cols): Customization Controls & AI Assistant */}
         <div className="lg:col-span-7 space-y-6">
           {/* 9. AI Customization Assistant */}
-          <Card className="border-[#20B8A5]/40 shadow-sm bg-gradient-to-br from-white to-[#20B8A5]/5">
+          <Card className="border-teal-200 shadow-sm bg-gradient-to-br from-white to-teal-50/30">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-xl bg-[#20B8A5]/10 text-[#20B8A5]">
+                  <div className="p-2 rounded-xl bg-teal-50 text-teal-700">
                     <Sparkles size={18} />
                   </div>
                   <div>
-                    <CardTitle className="text-base text-[#111111]">AI Customization Assistant</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-base text-slate-900">AI Customization Assistant</CardTitle>
+                    <CardDescription className="text-slate-500">
                       Describe what you want. Let AI help you configure it.
                     </CardDescription>
                   </div>
@@ -440,7 +442,7 @@ export const CustomizationStudioPage = () => {
                     value={aiPrompt}
                     onChange={(e) => setAiPrompt(e.target.value)}
                     placeholder="e.g. I need a tyre with better wet-road grip and longer durability..."
-                    className="w-full rounded-xl bg-white border border-gray-300 text-sm py-3 pl-4 pr-24 text-[#111111] placeholder-[#858585]/60 focus:outline-none focus:ring-2 focus:ring-[#20B8A5] focus:border-transparent shadow-xs"
+                    className="w-full rounded-xl bg-white border border-slate-200 text-sm py-3 pl-4 pr-24 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent shadow-xs"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') handleGenerateAi();
                     }}
@@ -460,7 +462,7 @@ export const CustomizationStudioPage = () => {
 
                 {/* Prompt suggestions pills */}
                 <div className="space-y-1.5">
-                  <span className="text-[10px] font-mono uppercase text-[#858585] tracking-wider block">
+                  <span className="text-[10px] font-mono uppercase text-slate-500 tracking-wider block">
                     Example Engineering Prompts:
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -472,7 +474,7 @@ export const CustomizationStudioPage = () => {
                           setAiPrompt(sample.prompt);
                           handleGenerateAi(sample.prompt);
                         }}
-                        className="text-[11px] font-mono text-[#111111]/75 bg-white border border-gray-200 hover:border-[#20B8A5] hover:text-[#20B8A5] px-2.5 py-1 rounded-lg transition-colors cursor-pointer text-left"
+                        className="text-[11px] font-mono text-slate-700 bg-white border border-slate-200 hover:border-teal-400 hover:text-teal-800 px-2.5 py-1 rounded-lg transition-colors cursor-pointer text-left shadow-2xs"
                       >
                         ⚡ {sample.label}
                       </button>
@@ -482,39 +484,39 @@ export const CustomizationStudioPage = () => {
 
                 {/* AI Recommendation Card & Comparison */}
                 {activeAiSuggestion && (
-                  <div className="mt-4 p-4 rounded-xl bg-white border border-[#20B8A5]/30 shadow-xs space-y-3 animate-in fade-in">
+                  <div className="mt-4 p-4 rounded-xl bg-white border border-teal-200 shadow-xs space-y-3 animate-in fade-in">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#20B8A5]">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-teal-700">
                         <CheckCircle2 size={16} />
                         <span>{activeAiSuggestion.title}</span>
                       </div>
-                      <Badge variant="orange" size="xs">AI Proposed</Badge>
+                      <Badge variant="teal" size="xs">AI Proposed</Badge>
                     </div>
 
-                    <p className="text-xs text-[#858585] font-body leading-relaxed">
+                    <p className="text-xs text-slate-600 font-body leading-relaxed">
                       {activeAiSuggestion.explanation}
                     </p>
 
                     {/* Before & After Comparison Grid */}
-                    <div className="pt-2 border-t border-gray-100">
-                      <p className="text-[10px] font-mono text-[#858585] uppercase mb-2">
+                    <div className="pt-2 border-t border-teal-50">
+                      <p className="text-[10px] font-mono text-slate-500 uppercase mb-2">
                         Before vs. After Configuration Comparison:
                       </p>
                       <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                        <div className="p-2.5 rounded-lg bg-gray-50 border border-gray-200">
-                          <span className="text-[10px] text-[#858585] block font-semibold">BEFORE (OEM Standard):</span>
-                          <p className="text-[#111111] mt-1 text-[11px]">{config.material}</p>
-                          <p className="text-[#858585] text-[10px]">{config.performanceTier}</p>
+                        <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                          <span className="text-[10px] text-slate-500 block font-semibold">BEFORE (OEM Standard):</span>
+                          <p className="text-slate-900 mt-1 text-[11px]">{config.material}</p>
+                          <p className="text-slate-500 text-[10px]">{config.performanceTier}</p>
                         </div>
-                        <div className="p-2.5 rounded-lg bg-[#20B8A5]/5 border border-[#20B8A5]/30">
-                          <span className="text-[10px] text-[#20B8A5] block font-semibold">AFTER (AI Recommended):</span>
-                          <p className="text-[#111111] mt-1 text-[11px] font-bold">
+                        <div className="p-2.5 rounded-lg bg-teal-50/50 border border-teal-200">
+                          <span className="text-[10px] text-teal-800 block font-semibold">AFTER (AI Recommended):</span>
+                          <p className="text-slate-900 mt-1 text-[11px] font-bold">
                             {activeAiSuggestion.changes.rubberCompound ||
                              activeAiSuggestion.changes.material ||
                              activeAiSuggestion.changes.brakeCompound ||
                              'AI Optimized Alloy'}
                           </p>
-                          <p className="text-[#20B8A5] text-[10px]">{activeAiSuggestion.changes.performanceTier || 'Enhanced Durability'}</p>
+                          <p className="text-teal-700 text-[10px] font-bold">{activeAiSuggestion.changes.performanceTier || 'Enhanced Durability'}</p>
                         </div>
                       </div>
                     </div>
@@ -545,16 +547,16 @@ export const CustomizationStudioPage = () => {
           </Card>
 
           {/* Category-Specific Manual Customization Controls */}
-          <Card>
+          <Card className="bg-white border border-teal-100">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Sliders className="text-[#FF7138] w-4 h-4" />
+                <CardTitle className="flex items-center gap-2 text-slate-900">
+                  <Sliders className="text-teal-600 w-4 h-4" />
                   Engineering Parameters & Specifications
                 </CardTitle>
-                <Badge variant="default" size="xs">Category-Specific</Badge>
+                <Badge variant="teal" size="xs">Category-Specific</Badge>
               </div>
-              <CardDescription>
+              <CardDescription className="text-slate-500">
                 Customize attributes tailored specifically for {selectedProduct.category}.
               </CardDescription>
             </CardHeader>
@@ -757,8 +759,8 @@ export const CustomizationStudioPage = () => {
                   {/* Quantity Slider */}
                   <div>
                     <div className="flex justify-between text-xs font-mono mb-1">
-                      <span className="text-[#858585] uppercase">Batch Quantity:</span>
-                      <span className="text-[#FF7138] font-bold">{config.quantity} units</span>
+                      <span className="text-slate-500 uppercase">Batch Quantity:</span>
+                      <span className="text-teal-700 font-bold">{config.quantity} units</span>
                     </div>
                     <input
                       type="range"
@@ -767,9 +769,9 @@ export const CustomizationStudioPage = () => {
                       step="5"
                       value={config.quantity}
                       onChange={(e) => setConfig({ ...config, quantity: Number(e.target.value) })}
-                      className="w-full accent-[#FF7138]"
+                      className="w-full accent-teal-600"
                     />
-                    <div className="flex justify-between text-[10px] text-[#858585] font-mono mt-0.5">
+                    <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-0.5">
                       <span>MOQ: {selectedProduct.moq}</span>
                       <span>Max: {selectedProduct.moq * 20}</span>
                     </div>
@@ -778,7 +780,7 @@ export const CustomizationStudioPage = () => {
 
                 {/* Additional Notes */}
                 <div>
-                  <label className="block text-xs font-mono uppercase text-[#858585] mb-1">
+                  <label className="block text-xs font-mono uppercase text-slate-500 mb-1">
                     Special Engineering Instructions or Tolerances
                   </label>
                   <textarea
@@ -786,18 +788,19 @@ export const CustomizationStudioPage = () => {
                     value={config.customNotes}
                     onChange={(e) => setConfig({ ...config, customNotes: e.target.value })}
                     placeholder="Specify surface roughness (Ra), anodizing color codes, thermal ratings, or fastener compatibility..."
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#FF7138]"
+                    className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
                 </div>
               </div>
 
               {/* Bottom Action Buttons */}
-              <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
+              <div className="mt-6 pt-4 border-t border-teal-50 flex flex-wrap items-center justify-between gap-3">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handleReset}
                   leftIcon={<RotateCcw size={14} />}
+                  className="border-slate-200"
                 >
                   Reset Defaults
                 </Button>
@@ -807,6 +810,7 @@ export const CustomizationStudioPage = () => {
                   size="md"
                   onClick={() => setShowPostModal(true)}
                   rightIcon={<ArrowRight size={16} />}
+                  className="bg-teal-600 hover:bg-teal-700 text-white"
                 >
                   Post Requirement to Manufacturers
                 </Button>
@@ -827,18 +831,18 @@ export const CustomizationStudioPage = () => {
         >
           <form onSubmit={handlePostRequirement} className="space-y-4">
             {/* Summary preview */}
-            <div className="p-3.5 bg-[#F5F5F3] rounded-xl border border-gray-200 text-xs font-mono space-y-1.5">
+            <div className="p-3.5 bg-teal-50/60 rounded-xl border border-teal-100 text-xs font-mono space-y-1.5">
               <div className="flex justify-between">
-                <span className="text-[#858585]">Component:</span>
-                <span className="font-bold text-[#111111]">{selectedProduct.name}</span>
+                <span className="text-slate-500">Component:</span>
+                <span className="font-bold text-slate-900">{selectedProduct.name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#858585]">Customized Material:</span>
-                <span className="text-[#20B8A5] font-semibold">{config.material}</span>
+                <span className="text-slate-500">Customized Material:</span>
+                <span className="text-teal-700 font-semibold">{config.material}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#858585]">Batch Size:</span>
-                <span className="text-[#FF7138] font-bold">{config.quantity} units</span>
+                <span className="text-slate-500">Batch Size:</span>
+                <span className="text-teal-800 font-bold">{config.quantity} units</span>
               </div>
             </div>
 
@@ -874,29 +878,29 @@ export const CustomizationStudioPage = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase text-[#111111]/80 font-mono mb-1">
+              <label className="block text-xs font-semibold uppercase text-slate-700 font-mono mb-1">
                 Additional Instructions
               </label>
               <textarea
                 rows={2}
                 value={postFormData.additionalInstructions}
                 onChange={(e) => setPostFormData({ ...postFormData, additionalInstructions: e.target.value })}
-                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs text-[#111111] focus:ring-2 focus:ring-[#FF7138]"
+                className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-teal-500"
               />
             </div>
 
             {/* Reference CAD / Image upload placeholder */}
-            <div className="p-3 bg-white border border-dashed border-gray-300 rounded-xl text-center space-y-1">
-              <UploadCloud className="mx-auto text-[#FF7138] w-6 h-6" />
-              <p className="text-xs font-mono text-[#111111]">Attach Reference STEP, STL or 2D Drawing</p>
-              <p className="text-[10px] text-[#858585]">Pre-attached: {postFormData.referenceFile}</p>
+            <div className="p-3 bg-white border border-dashed border-teal-200 rounded-xl text-center space-y-1">
+              <UploadCloud className="mx-auto text-teal-600 w-6 h-6" />
+              <p className="text-xs font-mono text-slate-900">Attach Reference STEP, STL or 2D Drawing</p>
+              <p className="text-[10px] text-slate-400">Pre-attached: {postFormData.referenceFile}</p>
             </div>
 
-            <div className="flex justify-end gap-3 pt-3 border-t border-gray-100">
+            <div className="flex justify-end gap-3 pt-3 border-t border-teal-50">
               <Button variant="outline" size="sm" onClick={() => setShowPostModal(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" size="sm" rightIcon={<Send size={14} />}>
+              <Button type="submit" variant="primary" size="sm" rightIcon={<Send size={14} />} className="bg-teal-600 hover:bg-teal-700 text-white">
                 Submit RFQ to Manufacturers
               </Button>
             </div>
@@ -913,34 +917,34 @@ export const CustomizationStudioPage = () => {
           description={`Your customized requirement #${postSuccessModal.id} has been broadcast to verified manufacturers.`}
         >
           <div className="space-y-4">
-            <div className="p-4 bg-[#F5F5F3] rounded-xl border border-emerald-500/30 text-xs font-mono space-y-2">
-              <div className="flex items-center gap-2 text-emerald-600 font-bold">
+            <div className="p-4 bg-teal-50/60 rounded-xl border border-teal-200 text-xs font-mono space-y-2">
+              <div className="flex items-center gap-2 text-teal-700 font-bold">
                 <CheckCircle2 size={16} />
                 <span>RFQ Registered in Shared State</span>
               </div>
               <div className="flex justify-between pt-1">
-                <span className="text-[#858585]">RFQ Identifier:</span>
-                <span className="font-bold text-[#FF7138]">{postSuccessModal.id}</span>
+                <span className="text-slate-500">RFQ Identifier:</span>
+                <span className="font-bold text-teal-800">{postSuccessModal.id}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#858585]">Product Category:</span>
-                <span>{postSuccessModal.category}</span>
+                <span className="text-slate-500">Product Category:</span>
+                <span className="text-slate-900 font-semibold">{postSuccessModal.category}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#858585]">Target Quantity:</span>
-                <span>{postSuccessModal.quantity} pcs</span>
+                <span className="text-slate-500">Target Quantity:</span>
+                <span className="text-slate-900 font-semibold">{postSuccessModal.quantity} pcs</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#858585]">Broadcast Visibility:</span>
-                <span className="text-[#20B8A5]">Visible in Manufacturer Incoming Requests</span>
+                <span className="text-slate-500">Broadcast Visibility:</span>
+                <span className="text-teal-700 font-semibold">Visible in Manufacturer Incoming Requests</span>
               </div>
             </div>
 
-            <p className="text-xs text-[#858585] font-body leading-relaxed">
+            <p className="text-xs text-slate-600 font-body leading-relaxed">
               Because this is a shared state demonstration, this requirement is now immediately available for review and quotation in the <strong>Manufacturer Workspace</strong>.
             </p>
 
-            <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">
+            <div className="flex justify-end gap-3 pt-2 border-t border-teal-50">
               <Button
                 variant="outline"
                 size="sm"
