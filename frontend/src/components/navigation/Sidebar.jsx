@@ -44,19 +44,12 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     }
   }, [location.pathname, role, setRole]);
 
-  const handleItemNavigation = (e, path) => {
-    e.preventDefault();
-    navigate(path);
-    if (onClose) {
-      setTimeout(() => {
-        onClose();
-      }, 30);
-    }
+  const handleItemNavigation = () => {
+    onClose?.();
   };
 
-  // Exactly 10 Main Navigation Items for Customer as specified in Section 2
+  // Main navigation items for the customer workspace
   const customerLinks = [
-    { name: 'Overview', path: '/customer/dashboard', icon: <LayoutDashboard size={16} /> },
     { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag size={16} /> },
     { name: 'Post Requirement', path: '/customer/post-requirement', icon: <PlusCircle size={16} /> },
     { name: 'My Projects', path: '/customer/projects', icon: <FolderKanban size={16} /> },
@@ -72,7 +65,6 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       icon: <Truck size={16} />,
       badge: activeOrdersCount > 0 ? activeOrdersCount : null,
     },
-    { name: 'Production Tracking', path: '/customer/tracking', icon: <Layers size={16} /> },
     { name: 'Quality Reports', path: '/customer/quality', icon: <ShieldCheck size={16} /> },
     {
       name: 'Messages',
@@ -188,10 +180,10 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
 
           const active = isItemActive();
           return (
-            <a
+            <Link
               key={item.path}
-              href={item.path}
-              onClick={(e) => handleItemNavigation(e, item.path)}
+              to={item.path}
+              onClick={handleItemNavigation}
               className={`flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                 active
                   ? 'bg-teal-50 text-teal-900 font-bold border-l-4 border-teal-600 shadow-2xs'
@@ -210,7 +202,7 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
                 )}
                 {active && <ChevronRight size={14} className="text-teal-600" />}
               </div>
-            </a>
+            </Link>
           );
         })}
       </nav>

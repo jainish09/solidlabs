@@ -25,9 +25,11 @@ import {
 } from 'lucide-react';
 import Badge from '../common/Badge';
 
+const EMPTY_PARAMS = Object.freeze({});
+
 export const CadViewer = ({
   preset = 'mounting_plate',
-  params = {},
+  params = EMPTY_PARAMS,
   customGeometry = null,
   colorTheme = 'metal', // 'metal' | 'orange' | 'teal' | 'steel' | 'white'
   height = '480px',

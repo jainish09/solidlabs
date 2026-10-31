@@ -5,7 +5,7 @@ import Badge from '../common/Badge';
 import Button from '../common/Button';
 import { useAuth } from '../../context/AuthContext';
 
-export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
+export const ProductCard = ({ product, onViewDetails, onContactSupplier, strictImage = false, containImage = false, hideDemoBadge = false, chatButtonStyle = false }) => {
   const navigate = useNavigate();
   const { wishlist, toggleWishlist, role, getOrCreateConversationForProduct } = useAuth();
   const isWishlisted = wishlist.includes(product.id);
@@ -24,21 +24,35 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
       <div>
         {/* Product Image Container */}
         <div className="relative h-48 w-full overflow-hidden bg-slate-50">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-            onError={(e) => {
-              e.target.src = 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80';
-            }}
-          />
+          {product.image ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              className={`w-full h-full ${containImage ? 'object-contain p-3' : 'object-cover object-center'} group-hover:scale-105 transition-transform duration-500`}
+              loading="lazy"
+              onError={(e) => {
+                if (strictImage) {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                } else {
+                  e.target.src = 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80';
+                }
+              }}
+            />
+          ) : null}
+          {strictImage && !product.image ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-slate-100 px-4 text-center text-xs font-medium text-slate-500">
+              Image unavailable
+            </div>
+          ) : strictImage ? (
+            <div className="hidden absolute inset-0 items-center justify-center bg-slate-100 px-4 text-center text-xs font-medium text-slate-500">
+              Product image unavailable
+            </div>
+          ) : null}
 
           {/* Top Pill Badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5 pointer-events-none">
-            <Badge variant="teal" size="xs">
-              Demo Record
-            </Badge>
+            {!hideDemoBadge && <Badge variant="teal" size="xs">Demo Record</Badge>}
             {product.customizationAvailable && (
               <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white/95 text-teal-800 border border-teal-200 shadow-xs">
                 AI Customizable
@@ -149,7 +163,9 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
         <button
           type="button"
           onClick={handleDirectChat}
-          className="w-full py-1.5 text-center text-xs font-mono text-slate-600 hover:text-teal-800 hover:bg-teal-50/50 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+          className={`w-full py-1.5 text-center text-xs font-mono rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${chatButtonStyle
+            ? 'border border-teal-200 bg-teal-50 px-3 py-2 rounded-xl font-semibold text-teal-800 shadow-xs hover:border-teal-300 hover:bg-teal-100 hover:text-teal-900'
+            : 'text-slate-600 hover:text-teal-800 hover:bg-teal-50/50'}`}
         >
           <MessageSquare size={12} className="text-teal-600" />
           <span>Chat with Manufacturer</span>

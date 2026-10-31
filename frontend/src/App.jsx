@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import PublicLayout from './layouts/PublicLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 
@@ -11,6 +11,22 @@ const ScrollToTop = () => {
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
+  return null;
+};
+
+const RouteDebug = () => {
+  const location = useLocation();
+  const { role } = useAuth();
+
+  useEffect(() => {
+    console.debug('[route-debug]', {
+      pathname: location.pathname,
+      search: location.search,
+      hash: location.hash,
+      role,
+    });
+  }, [location.pathname, location.search, location.hash, role]);
+
   return null;
 };
 
@@ -56,6 +72,7 @@ export const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <RouteDebug />
         <ScrollToTop />
         <Routes>
           {/* Public & Exploration Pages */}
