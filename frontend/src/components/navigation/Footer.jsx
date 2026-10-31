@@ -117,6 +117,11 @@ export const Footer = () => {
             </p>
             <ul className="space-y-2 text-xs text-slate-600">
               <li>
+                <Link to="/pricing" className="hover:text-teal-700 transition-colors font-bold text-teal-800">
+                  Pricing & Subscriptions
+                </Link>
+              </li>
+              <li>
                 <Link to="/customer/dashboard" className="hover:text-teal-700 transition-colors">
                   Customer Engineer Workspace
                 </Link>

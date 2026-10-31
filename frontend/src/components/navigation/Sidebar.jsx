@@ -24,13 +24,18 @@ import {
   MessageSquare,
   PlusCircle,
   Eye,
+  CreditCard,
+  Lock,
 } from 'lucide-react';
 import Badge from '../common/Badge';
+import { useSubscription } from '../../context/SubscriptionContext';
+import { FEATURES } from '../../utils/featureAccess';
 
 export const Sidebar = ({ onClose, isDrawer = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, role, setRole, showToast, totalUnreadMessages, quotations = [], orders = [] } = useAuth();
+  const { currentPlan, hasAccess } = useSubscription();
 
   const pendingQuotesCount = quotations.filter((q) => q.status === 'pending').length;
   const activeOrdersCount = orders.filter((o) => o.currentStageIndex < 6).length;
@@ -54,11 +59,17 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
     }
   };
 
-  // Exactly 10 Main Navigation Items for Customer as specified in Section 2
+  // Customer Navigation Items with Subscription Access Controls
   const customerLinks = [
     { name: 'Overview', path: '/customer/dashboard', icon: <LayoutDashboard size={16} /> },
     { name: 'Marketplace', path: '/customer/marketplace', icon: <ShoppingBag size={16} /> },
-    { name: 'Post Requirement', path: '/customer/post-requirement', icon: <PlusCircle size={16} /> },
+    {
+      name: 'Post Requirement',
+      path: '/customer/post-requirement',
+      icon: <PlusCircle size={16} />,
+      requiredFeature: FEATURES.SUBMIT_REQUIREMENTS,
+      requiredTier: 'PRO',
+    },
     { name: 'My Projects', path: '/customer/projects', icon: <FolderKanban size={16} /> },
     {
       name: 'Quotations',
@@ -72,14 +83,29 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
       icon: <Truck size={16} />,
       badge: activeOrdersCount > 0 ? activeOrdersCount : null,
     },
-    { name: 'Production Tracking', path: '/customer/tracking', icon: <Layers size={16} /> },
-    { name: 'Quality Reports', path: '/customer/quality', icon: <ShieldCheck size={16} /> },
+    {
+      name: 'Production Tracking',
+      path: '/customer/tracking',
+      icon: <Layers size={16} />,
+      requiredFeature: FEATURES.PRODUCTION_TRACKING,
+      requiredTier: 'ENT',
+    },
+    {
+      name: 'Quality Reports',
+      path: '/customer/quality',
+      icon: <ShieldCheck size={16} />,
+      requiredFeature: FEATURES.QUALITY_REPORTS,
+      requiredTier: 'ENT',
+    },
     {
       name: 'Messages',
       path: '/customer/messages',
       icon: <MessageSquare size={16} />,
       badge: totalUnreadMessages > 0 ? totalUnreadMessages : null,
+      requiredFeature: FEATURES.MANUFACTURER_CHAT,
+      requiredTier: 'PRO',
     },
+    { name: 'Subscription', path: '/customer/subscription', icon: <CreditCard size={16} /> },
     { name: 'Profile & Settings', path: '/customer/settings', icon: <Settings size={16} /> },
   ];
 
@@ -187,6 +213,8 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
           };
 
           const active = isItemActive();
+          const isLocked = role === 'customer' && item.requiredFeature && !hasAccess(item.requiredFeature);
+
           return (
             <a
               key={item.path}
@@ -203,6 +231,12 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
                 <span className="truncate">{item.name}</span>
               </div>
               <div className="flex items-center gap-1.5">
+                {isLocked && (
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-0.5">
+                    <Lock size={9} />
+                    <span>{item.requiredTier}</span>
+                  </span>
+                )}
                 {item.badge && (
                   <span className="px-2 py-0.5 rounded-full bg-teal-600 text-white text-[9px] font-bold font-mono shadow-2xs">
                     {item.badge}
@@ -214,6 +248,38 @@ export const Sidebar = ({ onClose, isDrawer = false }) => {
           );
         })}
       </nav>
+
+      {/* Customer Subscription Tier Badge Card */}
+      {role === 'customer' && (
+        <div className="p-3 border-t border-teal-100 bg-teal-50/50">
+          <div className="p-2.5 rounded-xl bg-white border border-teal-200/80 shadow-2xs">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-mono text-[10px] text-slate-500 uppercase tracking-wider">Plan</span>
+              <span className={`font-bold font-mono text-[11px] px-2 py-0.5 rounded-md ${
+                currentPlan === 'ENTERPRISE'
+                  ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                  : currentPlan === 'PROFESSIONAL'
+                  ? 'bg-teal-100 text-teal-900 border border-teal-300'
+                  : 'bg-slate-100 text-slate-700 border border-slate-200'
+              }`}>
+                {currentPlan}
+              </span>
+            </div>
+            <div className="mt-2 flex items-center justify-between text-[11px]">
+              <span className="text-slate-500 font-mono text-[10px]">
+                {currentPlan === 'STARTER' ? 'Free Forever' : currentPlan === 'PROFESSIONAL' ? '₹2,999/mo' : '₹4,999/mo'}
+              </span>
+              <a
+                href="/customer/subscription"
+                onClick={(e) => handleItemNavigation(e, '/customer/subscription')}
+                className="text-teal-800 font-bold hover:underline font-mono text-[10px]"
+              >
+                {currentPlan === 'ENTERPRISE' ? 'Manage' : 'Upgrade →'}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer System Status */}
       <div className="p-3 border-t border-teal-100 bg-teal-50/30 text-[10px] font-mono text-slate-500">

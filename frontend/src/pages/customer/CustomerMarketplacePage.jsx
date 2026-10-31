@@ -1,6 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useSubscription } from '../../context/SubscriptionContext';
+import { FEATURES } from '../../utils/featureAccess';
+import { PLAN_IDS } from '../../data/subscriptionPlans';
 import { AUTOMOTIVE_PRODUCTS } from '../../data/automotiveProducts';
 import { MOCK_MANUFACTURER_PROFILES } from '../../data/mockData';
 import ProductCard from '../../components/marketplace/ProductCard';
@@ -173,6 +176,7 @@ const ALL_MANUFACTURERS = [
 export const CustomerMarketplacePage = () => {
   const navigate = useNavigate();
   const { role, getOrCreateConversationForProduct } = useAuth();
+  const { hasAccess, openUpgradeModal, showToast } = useSubscription();
   const [searchParams] = useSearchParams();
 
   // Active view: 'products' or 'manufacturers'
@@ -192,11 +196,27 @@ export const CustomerMarketplacePage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleContactManufacturer = (mfg) => {
+    if (!hasAccess(FEATURES.SUBMIT_REQUIREMENTS)) {
+      openUpgradeModal(
+        PLAN_IDS.PROFESSIONAL,
+        'Post Custom Requirement',
+        'Broadcasting custom engineering requirements and RFQs to verified machine shops requires a Professional plan.'
+      );
+      return;
+    }
     // Navigate to post requirement with this manufacturer pre-selected or chat
     navigate(`/customer/post-requirement?mfg=${encodeURIComponent(mfg.name)}`);
   };
 
   const handleChatProduct = (product) => {
+    if (!hasAccess(FEATURES.MANUFACTURER_CHAT)) {
+      openUpgradeModal(
+        PLAN_IDS.PROFESSIONAL,
+        'Direct Manufacturer Messaging',
+        'Direct chat with suppliers and quotation negotiation require a Professional plan.'
+      );
+      return;
+    }
     const conv = getOrCreateConversationForProduct(product);
     setSelectedProduct(null);
     navigate(`/customer/messages/${conv.id}`);
@@ -703,6 +723,18 @@ export const CustomerMarketplacePage = () => {
                 Close
               </Button>
               <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  showToast(`Simulated Order: ${selectedProduct.name} (${selectedProduct.moq} units) confirmed at listed rate.`);
+                  setSelectedProduct(null);
+                  navigate('/customer/orders');
+                }}
+                className="bg-slate-900 hover:bg-black text-white font-bold"
+              >
+                Order Listed Batch
+              </Button>
+              <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleChatProduct(selectedProduct)}
@@ -716,13 +748,21 @@ export const CustomerMarketplacePage = () => {
                 size="sm"
                 onClick={() => {
                   const p = selectedProduct;
+                  if (!hasAccess(FEATURES.CUSTOMIZE_PRODUCTS)) {
+                    openUpgradeModal(
+                      PLAN_IDS.PROFESSIONAL,
+                      'AI Customization Studio',
+                      'Custom product modification and parametric design require a Professional plan.'
+                    );
+                    return;
+                  }
                   setSelectedProduct(null);
-                  navigate(`/customer/post-requirement?part=${encodeURIComponent(p.name)}`);
+                  navigate(`/customize/${p.id}`);
                 }}
                 leftIcon={<Sliders size={14} />}
-                className="bg-teal-600 hover:bg-teal-700 text-white"
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold"
               >
-                Customize & Post RFQ
+                Customize with AI
               </Button>
             </div>
           </div>

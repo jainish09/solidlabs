@@ -1,16 +1,44 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Star, Sparkles, Sliders, ArrowRight, MessageSquare, MapPin, ShieldCheck, Clock } from 'lucide-react';
+import { Heart, Star, Sparkles, Sliders, ArrowRight, MessageSquare, MapPin, ShieldCheck, Clock, Lock } from 'lucide-react';
 import Badge from '../common/Badge';
 import Button from '../common/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useSubscription } from '../../context/SubscriptionContext';
+import { FEATURES } from '../../utils/featureAccess';
+import { PLAN_IDS } from '../../data/subscriptionPlans';
 
 export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
   const navigate = useNavigate();
   const { wishlist, toggleWishlist, role, getOrCreateConversationForProduct } = useAuth();
+  const { hasAccess, openUpgradeModal } = useSubscription();
   const isWishlisted = wishlist.includes(product.id);
 
+  const canCustomize = role !== 'customer' || hasAccess(FEATURES.CUSTOMIZE_PRODUCTS);
+  const canChat = role !== 'customer' || hasAccess(FEATURES.MANUFACTURER_CHAT);
+
+  const handleCustomizeClick = () => {
+    if (!canCustomize) {
+      openUpgradeModal(
+        PLAN_IDS.PROFESSIONAL,
+        'AI Customization Studio',
+        'Build customized products, use AI-powered design assistance and configure technical dimensions to your exact vehicle specs.'
+      );
+      return;
+    }
+    navigate(`/customize/${product.id}`);
+  };
+
   const handleDirectChat = () => {
+    if (!canChat) {
+      openUpgradeModal(
+        PLAN_IDS.PROFESSIONAL,
+        'Direct Manufacturer Messaging',
+        'Direct supplier communication, technical negotiations, and quotation requests require a Professional plan.'
+      );
+      return;
+    }
+
     if (onContactSupplier) {
       onContactSupplier(product);
     } else {
@@ -138,11 +166,15 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
           <Button
             variant="primary"
             size="sm"
-            onClick={() => navigate(`/customize/${product.id}`)}
-            leftIcon={<Sliders size={12} />}
-            className="w-full text-xs bg-teal-600 hover:bg-teal-700 text-white shadow-xs"
+            onClick={handleCustomizeClick}
+            leftIcon={canCustomize ? <Sliders size={12} /> : <Lock size={12} className="text-amber-200" />}
+            className={`w-full text-xs shadow-xs ${
+              canCustomize
+                ? 'bg-teal-600 hover:bg-teal-700 text-white'
+                : 'bg-slate-800 hover:bg-slate-900 text-amber-200'
+            }`}
           >
-            Customize
+            {canCustomize ? 'Customize' : 'Customize (Pro)'}
           </Button>
         </div>
 
@@ -151,8 +183,12 @@ export const ProductCard = ({ product, onViewDetails, onContactSupplier }) => {
           onClick={handleDirectChat}
           className="w-full py-1.5 text-center text-xs font-mono text-slate-600 hover:text-teal-800 hover:bg-teal-50/50 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
         >
-          <MessageSquare size={12} className="text-teal-600" />
-          <span>Chat with Manufacturer</span>
+          {canChat ? (
+            <MessageSquare size={12} className="text-teal-600" />
+          ) : (
+            <Lock size={11} className="text-amber-600" />
+          )}
+          <span>{canChat ? 'Chat with Manufacturer' : 'Chat with Manufacturer (Pro)'}</span>
         </button>
       </div>
     </div>

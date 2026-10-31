@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import Button from '../common/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useSubscription } from '../../context/SubscriptionContext';
+import DemoPlanSwitcher from '../subscription/DemoPlanSwitcher';
 import Sidebar from './Sidebar';
 
 export const Navbar = () => {
@@ -21,16 +23,19 @@ export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { role, setRole, showToast, totalUnreadMessages, sidebarOpen, setSidebarOpen, toggleSidebar } = useAuth();
+  const { currentPlan } = useSubscription();
 
-  // Role-specific header navigation: For customer role, only Marketplace, My Projects, How It Works
+  // Role-specific header navigation: For customer role, Marketplace, Pricing, My Projects, How It Works
   const customerNavLinks = [
     { name: 'Marketplace', path: '/customer/marketplace' },
+    { name: 'Pricing', path: '/pricing' },
     { name: 'My Projects', path: '/customer/projects' },
     { name: 'How It Works', path: '/#how-it-works' },
   ];
 
   const defaultNavLinks = [
     { name: 'Marketplace', path: '/marketplace' },
+    { name: 'Pricing', path: '/pricing' },
     { name: 'AI Studio', path: '/customize/prod_001' },
     { name: 'CAD Metrology', path: '/cad-analyzer' },
     { name: 'How It Works', path: '/#how-it-works' },
@@ -181,6 +186,9 @@ export const Navbar = () => {
                 <User size={16} />
               </Link>
             )}
+
+            {/* Hackathon Demo Plan Switcher */}
+            <DemoPlanSwitcher />
 
             {/* Persona Switcher Pill */}
             <button

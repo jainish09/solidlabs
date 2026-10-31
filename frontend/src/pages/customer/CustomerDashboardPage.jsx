@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useSubscription } from '../../context/SubscriptionContext';
+import { FEATURES } from '../../utils/featureAccess';
+import { PLAN_IDS } from '../../data/subscriptionPlans';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
@@ -29,6 +32,7 @@ import {
 
 export const CustomerDashboardPage = () => {
   const { user, requirements, quotations, orders, totalUnreadMessages, acceptQuotation, showToast } = useAuth();
+  const { hasAccess, openUpgradeModal } = useSubscription();
   const navigate = useNavigate();
 
   // Confirmation modal state for accepting quotation from overview
@@ -38,6 +42,54 @@ export const CustomerDashboardPage = () => {
   const activeOrders = orders.filter((o) => o.currentStageIndex < 6);
   const pendingQuotations = quotations.filter((q) => q.status === 'pending');
   const qualityVerifiedOrders = orders.filter((o) => o.qualityReportReady || o.currentStageIndex >= 3);
+
+  const handlePostRequirementClick = () => {
+    if (!hasAccess(FEATURES.SUBMIT_REQUIREMENTS)) {
+      openUpgradeModal(
+        PLAN_IDS.PROFESSIONAL,
+        'Post Custom Requirement',
+        'Submitting custom manufacturing requirements and broadcasting RFQs requires a Professional subscription.'
+      );
+      return;
+    }
+    navigate('/customer/post-requirement');
+  };
+
+  const handleUploadCadClick = () => {
+    if (!hasAccess(FEATURES.UPLOAD_CAD)) {
+      openUpgradeModal(
+        PLAN_IDS.PROFESSIONAL,
+        'CAD Design Upload',
+        'Uploading custom 3D models (STEP, STL, IGES) and automated DFM auditing requires a Professional subscription.'
+      );
+      return;
+    }
+    navigate('/customer/post-requirement');
+  };
+
+  const handleTrackOrdersClick = () => {
+    if (!hasAccess(FEATURES.PRODUCTION_TRACKING)) {
+      openUpgradeModal(
+        PLAN_IDS.ENTERPRISE,
+        'Live Production Tracking',
+        'Live factory spindle telemetry, machine progress, and 7-stage shopfloor tracking require an Enterprise subscription.'
+      );
+      return;
+    }
+    navigate('/customer/tracking');
+  };
+
+  const handleCardClick = (card) => {
+    if (card.link === '/customer/quality' && !hasAccess(FEATURES.QUALITY_REPORTS)) {
+      openUpgradeModal(
+        PLAN_IDS.ENTERPRISE,
+        'Zeiss CMM Quality Reports',
+        'Accessing certified third-party CMM inspection reports and material test certificates requires an Enterprise subscription.'
+      );
+      return;
+    }
+    navigate(card.link);
+  };
 
   const handleConfirmAcceptQuote = () => {
     if (!acceptingQuote) return;
@@ -149,7 +201,7 @@ export const CustomerDashboardPage = () => {
           <Button
             variant="primary"
             size="md"
-            onClick={() => navigate('/customer/post-requirement')}
+            onClick={handlePostRequirementClick}
             leftIcon={<PlusCircle size={16} />}
             className="bg-teal-600 hover:bg-teal-700 text-white font-bold shadow-sm shadow-teal-600/25 px-5"
           >
@@ -197,7 +249,7 @@ export const CustomerDashboardPage = () => {
           <Card
             key={i}
             hover
-            onClick={() => navigate(card.link)}
+            onClick={() => handleCardClick(card)}
             className={`p-5 bg-white border border-teal-100/90 ${card.borderColor} shadow-xs cursor-pointer transition-all`}
           >
             <div className="flex items-start justify-between">
@@ -424,7 +476,7 @@ export const CustomerDashboardPage = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
                 type="button"
-                onClick={() => navigate('/customer/post-requirement')}
+                onClick={handlePostRequirementClick}
                 className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
                 <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
@@ -436,7 +488,7 @@ export const CustomerDashboardPage = () => {
 
               <button
                 type="button"
-                onClick={() => navigate('/customer/post-requirement')}
+                onClick={handleUploadCadClick}
                 className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
                 <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
@@ -460,7 +512,7 @@ export const CustomerDashboardPage = () => {
 
               <button
                 type="button"
-                onClick={() => navigate('/customer/tracking')}
+                onClick={handleTrackOrdersClick}
                 className="p-3 rounded-xl bg-teal-950/70 hover:bg-teal-900 border border-teal-700/60 text-left text-teal-100 hover:text-white transition-all cursor-pointer group shadow-2xs"
               >
                 <div className="flex items-center gap-1.5 text-teal-300 font-bold mb-1 group-hover:text-white">
